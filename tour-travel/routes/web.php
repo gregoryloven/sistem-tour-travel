@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\DestinasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('dashboard-admin', DashboardAdminController::class);
+Route::resource('destinasi', DestinasiController::class);
+Route::post('/destinasi/EditForm', [DestinasiController::class, 'EditForm'])->name('destinasi.EditForm');
+// route::get('/dashboard-admin', [DashboardAdminController::class, 'index']);
