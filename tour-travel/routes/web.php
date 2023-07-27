@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DestinasiController;
+use App\Http\Controllers\DaftarPaketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,8 @@ Route::get('/', function () {
 Route::resource('dashboard-admin', DashboardAdminController::class);
 Route::resource('destinasi', DestinasiController::class);
 Route::post('/destinasi/EditForm', [DestinasiController::class, 'EditForm'])->name('destinasi.EditForm');
+
+Route::resource('daftar-paket', DaftarPaketController::class);
+Route::post('/daftar-paket/store', [DaftarPaketController::class, 'store'])->name('daftar-paket.store');
+
 // route::get('/dashboard-admin', [DashboardAdminController::class, 'index']);

@@ -10,4 +10,9 @@ class Destinasi extends Model
     use HasFactory;
     protected $table = 'destinasis';
     protected $primaryKey = 'id';
+
+    public function destinasi()
+    {
+    	return $this->hasMany(destinasi::class, 'paket_id', 'id');
+    }
 }

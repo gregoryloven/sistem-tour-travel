@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('daftar_pakets', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('destinasi_id');
             $table->string("nama");
             $table->string("lama_hari");
             $table->string("pax");
             $table->integer("harga");
+            $table->foreign('destinasi_id')->references('id')->on('destinasis');
             $table->timestamps();
         });
     }
