@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
   <link rel="stylesheet" href="../../admin/node_modules/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="../../admin/node_modules/dropzone/dist/min/dropzone.min.css">
 
 
   <!-- CSS Libraries -->
@@ -54,6 +55,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script src="../../admin/node_modules/select2/dist/js/select2.full.min.js"></script>
+  <script src="../../admin/node_modules/dropzone/dist/min/dropzone.min.js"></script>
 
   <!-- JS Libraies -->
 
@@ -63,6 +65,7 @@
 
   <!-- Page Specific JS File -->
   <!-- <script src="../../admin/assets/js/page/forms-advanced-forms.js"></script> -->
+  <!-- <script src="../../admin/assets/js/page/components-multiple-upload.js"></script> -->
   @yield('javascript')
 </body>
 </html>

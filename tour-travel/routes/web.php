@@ -26,5 +26,6 @@ Route::post('/destinasi/EditForm', [DestinasiController::class, 'EditForm'])->na
 
 Route::resource('daftar-paket', DaftarPaketController::class);
 Route::post('/daftar-paket/store', [DaftarPaketController::class, 'store'])->name('daftar-paket.store');
+Route::get('/daftar-paket/detail/{id}', [DaftarPaketController::class, 'show'])->name('daftar-paket.detail');
 
 // route::get('/dashboard-admin', [DashboardAdminController::class, 'index']);

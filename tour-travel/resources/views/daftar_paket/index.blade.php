@@ -18,7 +18,7 @@
             <div class="card-header">
               <h4>{{$d->nama}}</h4>
               <div class="card-header-action">
-                <a href="#" class="btn btn-primary">View All</a>
+                <a href= "{{ url('daftar-paket/detail/'.$d->id) }}" class="btn btn-primary">Lihat Detail</a>
               </div>
             </div>
             <div class="card-body">
