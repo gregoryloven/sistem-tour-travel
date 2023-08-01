@@ -51,7 +51,7 @@
                     <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
-                <button class="btn btn-secondary mb-4" style="float: right;"><i class="fa fa-plus-circle"></i></button>
+                <button class="btn btn-secondary mb-4" style="float: right;" id='plus_button' onclick="addRow()"><i class="fa fa-plus-circle"></i></button>
 
                 <div class="table-responsive">
             <table class="table table-bordered" id="myTable">
@@ -64,16 +64,15 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                    <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="1" required>
+                        <!-- <td>
+                            <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="1" required>
                         </td>
                         <td>
-                  <input id="dengan-rupiah" type="text" class="form-control" name="diskon">
-
-                    <!-- <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="1" required > -->
-                        </td>
-                      
-                        <td>@currency(230000)</td>
+                            <input id="dengan-rupiah" type="text" class="form-control" name="diskon">
+                        </td> 
+                        <td>
+                            <button class="btn btn-secondary mb-4" id='delete_button' onclick="deleteRow(this)"><i class="fa fa-plus-circle"></i></button>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
@@ -163,6 +162,7 @@
 <script>
 $(document).ready(function() {
     var idgabung = [];
+    //checklist untuk destinasi id
     $("#multiple-select-field").change(function() {
         $(this).each(function() {
             idgabung = $(this).val();
@@ -243,7 +243,7 @@ $(document).ready(function() {
     });
 
 
-
+    //format rupiah 
     var dengan_rupiah = document.getElementById('dengan-rupiah');
     dengan_rupiah.addEventListener('keyup', function(e)
     {
@@ -272,6 +272,32 @@ $(document).ready(function() {
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
 
+
+
 });
+
+//Menambahkan row baru 
+function addRow() {
+        const table = document.getElementById('myTable');
+        const newRow = table.insertRow(table.rows.length);
+
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+      
+        cell1.innerHTML = '<input type="number" class="form-control" id="pax" name="pax" placeholder="0" min="1" required>';
+        cell2.innerHTML = '<input id="dengan-rupiah" type="text" class="form-control" name="diskon">';
+        cell3.innerHTML = '<button style="margin-top:8%; margin-left:43%" class="btn btn-secondary mb-4" id="delete_button" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button>';
+   
+    }
+
+    function deleteRow(button) {
+        const row = button.parentNode.parentNode; // Dapatkan baris yang akan dihapus
+        row.parentNode.removeChild(row); // Hapus baris dari tabel
+    }
+
+
+
+
 </script>
 @endsection
