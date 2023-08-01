@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('daftar_pakets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('destinasi_id')->nullable();
-            $table->json("destinasi_data");
+            $table->string("destinasi_data");
             $table->string("nama");
             $table->string("lama_hari");
             $table->string("pax");
             $table->integer("harga");
-            $table->json("included")->nullable();
+            $table->string("included")->nullable();
             $table->longText("whats_bring");
             $table->string("gambar");
             $table->string("gambar2")->nullable();
