@@ -51,6 +51,38 @@
                     <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="1" required>
                 </div>
                 <div class="form-group">
+                <button class="btn btn-secondary mb-4" style="float: right;"><i class="fa fa-plus-circle"></i></button>
+
+                <div class="table-responsive">
+            <table class="table table-bordered" id="myTable">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th style="width: 40%;">Pax</th>
+                        <th  style="width: 40%;">Harga</th>
+                        <th  style="width: 20%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                    <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="1" required>
+                        </td>
+                        <td>
+                  <input id="dengan-rupiah" type="text" class="form-control" name="diskon">
+
+                    <!-- <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="1" required > -->
+                        </td>
+                      
+                        <td>@currency(230000)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+                </div>
+
+
+                <div class="form-group">
                     <label class="d-block">Included</label>
                     <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
@@ -209,6 +241,37 @@ $(document).ready(function() {
         });
         }  
     });
+
+
+
+    var dengan_rupiah = document.getElementById('dengan-rupiah');
+    dengan_rupiah.addEventListener('keyup', function(e)
+    {
+        // console.log(e);
+        const inputText = this.value;
+        const numericOnly = inputText.replace(/\D/g, ''); // Hanya menyimpan karakter angka
+        
+
+        dengan_rupiah.value = formatRupiah(numericOnly, 'Rp. ');
+    });
+
+    function formatRupiah(angka, prefix)
+    {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split    = number_string.split(','),
+            sisa     = split[0].length % 3,
+            rupiah     = split[0].substr(0, sisa),
+            ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+            
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
+
 });
 </script>
 @endsection
