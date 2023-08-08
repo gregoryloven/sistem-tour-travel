@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DaftarPaket;
 use App\Models\Destinasi;
+use App\Models\TipeHarga;
 use Illuminate\Http\Request;
 
 class DaftarPaketController extends Controller
@@ -41,10 +42,14 @@ class DaftarPaketController extends Controller
         $data->destinasi_data = $request->get('data');
         $data->nama = $request->get("nama");
         $data->lama_hari = $request->get("lama_hari");
-        $data->pax = $request->get("pax");
-        $data->harga = $request->get("harga");
         $data->included = $request->get('check');
         $data->whats_bring = $request->get("whats_bring");
+
+        $data2 = new TipeHarga();
+        $data2->tipe = $request->get("tipe_harga");
+        $data2->min_pax = $request->get("min_pax");
+        $data2->harga_min_pax = $request->get("harga_min_pax");
+
 
         $file=$request->file('gambar');
         $imgFolder = 'gambar/';
@@ -94,6 +99,7 @@ class DaftarPaketController extends Controller
         }
 
         $data->save();
+        $data2->save();
 
         return response()->json(array(
             'status'=>'success'

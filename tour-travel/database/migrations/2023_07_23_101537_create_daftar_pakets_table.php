@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string("destinasi_data");
             $table->string("nama");
             $table->string("lama_hari");
-            $table->string("pax");
-            $table->integer("harga");
             $table->string("included")->nullable();
             $table->longText("whats_bring");
             $table->string("gambar");
