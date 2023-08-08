@@ -11,8 +11,14 @@ class DaftarPaket extends Model
     protected $table = 'daftar_pakets';
     protected $primaryKey = 'id';
 
-    public function daftar_paket()
+    public function destinasi()
     {
-    	return $this->belongsTo(DaftarPaket::class, 'paket_id');
+    	return $this->belongsTo(Destinasi::class, 'destinasi_id');
     }
+
+    public function tipe_harga()
+    {
+    	return $this->hasMany(TipeHarga::class, 'daftarpaket_id', 'id');
+    }
+
 }
