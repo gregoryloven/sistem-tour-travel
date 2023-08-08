@@ -247,12 +247,12 @@ $(document).ready(function() {
     var dengan_rupiah = document.getElementById('dengan-rupiah');
     dengan_rupiah.addEventListener('keyup', function(e)
     {
-        // console.log(e);
+        console.log(e);
         const inputText = this.value;
         const numericOnly = inputText.replace(/\D/g, ''); // Hanya menyimpan karakter angka
         
 
-        dengan_rupiah.value = formatRupiah(numericOnly, 'Rp. ');
+        this.value = formatRupiah(numericOnly, 'Rp. ');
     });
 
     function formatRupiah(angka, prefix)
@@ -285,15 +285,51 @@ function addRow() {
         const cell2 = newRow.insertCell(1);
         const cell3 = newRow.insertCell(2);
       
-        cell1.innerHTML = '<input type="number" class="form-control" id="pax" name="pax" placeholder="0" min="1" required>';
-        cell2.innerHTML = '<input id="dengan-rupiah" type="text" class="form-control" name="diskon">';
+        cell1.innerHTML = '<input type="number" class="form-control" id="pax" name="pax" placeholder="0" min="1" onclick="addDataHarga(pax)" key="pax" required>';
+        cell2.innerHTML = '<input id="dengan-rupiah" type="text" class="form-control" name="diskon" key="harga" onclick="addDataHarga(harga)" onkeyup="formatDenganRupiah(this)">';
         cell3.innerHTML = '<button style="margin-top:8%; margin-left:43%" class="btn btn-secondary mb-4" id="delete_button" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button>';
    
     }
 
+    // function addDataHarga (key)
+    // {
+    //     if(key == 'pax'){
+    //         console.log('a');
+
+    //     }
+    //     else if(key == 'harga'){
+    //         console.log('b')
+    //     }
+    // }
+
     function deleteRow(button) {
         const row = button.parentNode.parentNode; // Dapatkan baris yang akan dihapus
         row.parentNode.removeChild(row); // Hapus baris dari tabel
+    }
+
+    function formatRupiah(angka, prefix)
+    {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split    = number_string.split(','),
+            sisa     = split[0].length % 3,
+            rupiah     = split[0].substr(0, sisa),
+            ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+            
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
+
+
+    function formatDenganRupiah(input){
+        const inputText = input.value;
+        const numericOnly = inputText.replace(/\D/g, '');
+
+        input.value = formatRupiah(numericOnly, 'Rp. ');
     }
 
 
