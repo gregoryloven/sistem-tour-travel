@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DestinasiController;
+use App\Http\Controllers\ObjekWisataController;
 use App\Http\Controllers\DaftarPaketController;
 
 /*
@@ -21,6 +22,9 @@ Route::get('/', function () {
 });
 
 Route::resource('dashboard-admin', DashboardAdminController::class);
+Route::resource('objek-wisata', ObjekWisataController::class);
+Route::post('/objek-wisata/EditForm', [ObjekWisataController::class, 'EditForm'])->name('objek-wisata.EditForm');
+
 Route::resource('destinasi', DestinasiController::class);
 Route::post('/destinasi/EditForm', [DestinasiController::class, 'EditForm'])->name('destinasi.EditForm');
 

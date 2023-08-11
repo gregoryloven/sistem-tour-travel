@@ -49,10 +49,11 @@
                 <li>{{ $item }}</li>
                 @endforeach
             </ul>
-            <strong>Harga:</strong>
+            <strong>Pax & Harga:</strong>
             <ul>
-                @foreach ($data as $d)
-                <li>{{ $d->pax }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IDR {{ $d->harga }}.000 / pax</li>
+                @foreach ($data2 as $d)
+                    @if(isset($d->min_pax)) <li>Min: {{ $d->min_pax }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @currency($d->harga)</li> @endif
+                    @if(isset($d->pax_person)) <li>{{ $d->pax_person }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @currency($d->harga)</li> @endif
                 @endforeach
             </ul>
             <strong>Keperluan yang perlu dibawa (what's bring):</strong>
@@ -71,4 +72,20 @@
         </div>
     </section>
 </div>
+
+<!-- <div class="table-responsive">
+            <table class="table table-bordered" id="myTable">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th width="5%">No</th>
+                        <th>KBG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
 @endsection

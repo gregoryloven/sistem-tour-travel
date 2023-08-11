@@ -18,9 +18,18 @@
                 </div>
                 <div class="card-body">
                 <form method="POST" enctype="multipart/form-data">
-                    @csrf
+                @csrf
                 <div class="form-group">
                     <label>Destinasi</label>
+                    <select class="form-control" id='destinasi' name='destinasi' placeholder="Destinasi">
+                        <option disabled selected>Pilih Destinasi</option>
+                        @foreach($data as $d)
+                            <option value="{{ $d->id }}">{{ $d->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Objek yang dikunjungi</label>
                       <select class="form-control select2" id="multiple-select-field" multiple="" required>
                         @foreach($data as $d)
                         <option value="{{ $d->id }}">{{ $d->nama }}</option>
@@ -43,13 +52,48 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Pax</label>
-                    <input type="number" class="form-control" id="pax" name="pax" placeholder="0" min="1" required>
+                    <label>Tipe Harga</label>
+                    <select class="form-control" id='tipe_harga' name='tipe_harga' onchange='checkTipeHarga(this)' required>
+                        <option value="" disabled selected>Choose</option>
+                        <option value="1">Min Pax</option>
+                        <option value="2">Harga / Pax</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label>Harga / Pax</label>
-                    <input type="number" class="form-control" id="harga" name="harga" placeholder="0" min="1" required>
+                <!-- Kategori 1 -->
+                <div class="form-group" style='display:none' id='label_tipe1'>
+                    <div class="row">
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <label>Min Pax</label>
+                        <input type="number" class="form-control" id="min_pax" name="min_pax" placeholder="0" min="1" required>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <label>Harga / Pax</label>
+                        <input type="text" class="form-control" id="harga_min_pax" name="harga_min_pax" placeholder="0" min="1" required>
+                    </div>
+                    </div>
                 </div>
+                <!-- Kategori 2 -->
+                <div class="form-group" style='display:none' id='label_tipe2'>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="myTable">
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th style="width: 40%;">Pax</th>
+                                <th style="width: 40%;">Harga</th>
+                                <th style="width: 20%;">Actions <button class="btn btn-secondary ml-3" id='plus_button' onclick="addRow()"><i class="fa fa-plus-circle"></i></button></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+
                 <div class="form-group">
                     <label class="d-block">Included</label>
                     <div class="row">
@@ -140,8 +184,9 @@ $(document).ready(function() {
         event.preventDefault();
         var nama = $("#nama").val()
         var lama_hari = $("#lama_hari").val()
-        var pax = $("#pax").val()
-        var harga = $("#harga").val()
+        var tipe_harga = $("#tipe_harga").val()
+        var min_pax = $("#min_pax").val()
+        var harga_min_pax = $("#harga_min_pax").val().substr(3)
         var whats_bring = $("#whats_bring").val()
 
         var formData = new FormData();
@@ -167,15 +212,40 @@ $(document).ready(function() {
             }
         });
 
-        if(nama && lama_hari && pax && harga && gambar)
+        //array tipe 2
+        var pax_person = [];
+        var harga_pax = [];
+        const table = document.getElementById('myTable');
+        const newRow = table.insertRow(table.rows.length);
+
+        for (let i = 1; i < table.rows.length; i++) {
+            var a = "pax_person" + i;
+            var b = "harga_pax" + i;
+            if($('#'+a).val() != null)
+            {
+                pax_person.push($('#'+a).val());
+            }
+            if($('#'+b).val() != null)
+            {
+                var harga = $('#'+b).val();
+                var rp = harga.substr(3);
+                harga_pax.push(rp);
+            }
+
+        }   
+
+        if(nama && lama_hari && gambar)
         {
             formData.append('_token', '<?php echo csrf_token() ?>');
             formData.append('data', idgabung);
             formData.append('check', checkedValues);
             formData.append('nama', nama);
             formData.append('lama_hari', lama_hari);
-            formData.append('pax', pax);
-            formData.append('harga', harga);
+            formData.append('tipe_harga', tipe_harga);
+            formData.append('min_pax', min_pax);
+            formData.append('harga_min_pax', harga_min_pax);
+            formData.append('pax_person', pax_person);
+            formData.append('harga_pax', harga_pax);
             formData.append('whats_bring', whats_bring);
             
             $.ajax({
@@ -209,6 +279,83 @@ $(document).ready(function() {
         });
         }  
     });
+
+    //format rupiah 
+    var dengan_rupiah = document.getElementById('harga_min_pax');
+    dengan_rupiah.addEventListener('keyup', function(e)
+    {
+        // console.log(e);
+        const inputText = this.value;
+        const numericOnly = inputText.replace(/\D/g, ''); // Hanya menyimpan karakter angka
+        
+        dengan_rupiah.value = formatRupiah(numericOnly, 'Rp. ');
+    });
+
 });
+
+let i = 1;
+
+function addRow() {
+    const table = document.getElementById('myTable');
+    const newRow = table.insertRow(table.rows.length);
+    const cell1 = newRow.insertCell(0);
+    const cell2 = newRow.insertCell(1);
+    const cell3 = newRow.insertCell(2);
+
+    
+    cell1.innerHTML = '<input type="number" class="form-control pax_person" id="pax_person'+i+'" name="pax_person" placeholder="0" min="1" required>';
+    cell2.innerHTML = '<input type="text" class="form-control harga_pax" id="harga_pax'+i+'" name="harga_pax" onkeyup="formatDenganRupiah(this)" required>';
+    cell3.innerHTML = '<button style="margin-top:8%; margin-left:43%" class="btn btn-secondary mb-4" id="delete_button" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button>';
+
+    i = i+1;
+}
+
+function formatRupiah(angka, prefix) {
+    var number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split    = number_string.split(','),
+        sisa     = split[0].length % 3,
+        rupiah     = split[0].substr(0, sisa),
+        ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+        
+    if (ribuan) {
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+    }
+    
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+}
+
+function formatDenganRupiah(input) {
+    const inputText = input.value;
+    const numericOnly = inputText.replace(/\D/g, '');
+
+    input.value = formatRupiah(numericOnly, 'Rp. ');
+}
+
+function deleteRow(button) {
+    const row = button.parentNode.parentNode; // Dapatkan baris yang akan dihapus
+    row.parentNode.removeChild(row); // Hapus baris dari tabel
+}
+
+function checkTipeHarga(tipe) {
+
+    if($(tipe).val() == '1')
+    {
+        $('#label_tipe1').show()
+        
+        $('#label_tipe2').hide()
+        $('.pax_person').prop('required',false)
+        $('.harga_pax').prop('required',false)
+    }
+    else
+    {
+        $('#label_tipe2').show()
+        
+        $('#label_tipe1').hide()
+        $('#min_pax').prop('required',false)
+        $('#harga_min_pax').prop('required',false)
+    }
+}
 </script>
 @endsection

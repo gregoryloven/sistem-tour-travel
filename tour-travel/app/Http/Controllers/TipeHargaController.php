@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Destinasi;
+use App\Models\TipeHarga;
 use Illuminate\Http\Request;
 
-class DestinasiController extends Controller
+class TipeHargaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = Destinasi::all();
-        
-        return view('destinasi.index',compact('data'));
+        //
     }
 
     /**
@@ -36,7 +34,7 @@ class DestinasiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Destinasi $objekWisata)
+    public function show(Tipe_Harga $tipe_Harga)
     {
         //
     }
@@ -44,7 +42,7 @@ class DestinasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Destinasi $objekWisata)
+    public function edit(Tipe_Harga $tipe_Harga)
     {
         //
     }
@@ -52,7 +50,7 @@ class DestinasiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Destinasi $destinasi)
+    public function update(Request $request, Tipe_Harga $tipe_Harga)
     {
         //
     }
@@ -60,7 +58,7 @@ class DestinasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Destinasi $destinasi)
+    public function destroy(Tipe_Harga $tipe_Harga)
     {
         //
     }
