@@ -1,7 +1,7 @@
-<form role="form" method='POST' action="{{ url('destinasi/'.$data->id )}}" enctype="multipart/form-data">
+<form role="form" method='POST' action="{{ url('objek-wisata/'.$data->id )}}" enctype="multipart/form-data">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <h4 class="modal-title">Ubah Destinasi</h4>
+        <h4 class="modal-title">Ubah Objek Wisata</h4>
     </div>
     <div class="modal-body">
         @csrf

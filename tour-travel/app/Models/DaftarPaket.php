@@ -11,6 +11,11 @@ class DaftarPaket extends Model
     protected $table = 'daftar_pakets';
     protected $primaryKey = 'id';
 
+    public function objek_wisata()
+    {
+    	return $this->belongsTo(ObjekWisata::class, 'objekwisata_id');
+    }
+
     public function destinasi()
     {
     	return $this->belongsTo(Destinasi::class, 'destinasi_id');

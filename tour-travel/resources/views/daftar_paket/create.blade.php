@@ -18,9 +18,18 @@
                 </div>
                 <div class="card-body">
                 <form method="POST" enctype="multipart/form-data">
-                    @csrf
+                @csrf
                 <div class="form-group">
                     <label>Destinasi</label>
+                    <select class="form-control" id='destinasi' name='destinasi' placeholder="Destinasi">
+                        <option disabled selected>Pilih Destinasi</option>
+                        @foreach($data as $d)
+                            <option value="{{ $d->id }}">{{ $d->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Objek yang dikunjungi</label>
                       <select class="form-control select2" id="multiple-select-field" multiple="" required>
                         @foreach($data as $d)
                         <option value="{{ $d->id }}">{{ $d->nama }}</option>
@@ -68,7 +77,7 @@
                 <div class="form-group" style='display:none' id='label_tipe2'>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="myTable">
                         <thead>
                             <tr style="text-align: center;">
                                 <th style="width: 40%;">Pax</th>
@@ -177,7 +186,7 @@ $(document).ready(function() {
         var lama_hari = $("#lama_hari").val()
         var tipe_harga = $("#tipe_harga").val()
         var min_pax = $("#min_pax").val()
-        var harga_min_pax = $("#harga_min_pax").val()
+        var harga_min_pax = $("#harga_min_pax").val().substr(3)
         var whats_bring = $("#whats_bring").val()
 
         var formData = new FormData();
@@ -203,6 +212,28 @@ $(document).ready(function() {
             }
         });
 
+        //array tipe 2
+        var pax_person = [];
+        var harga_pax = [];
+        const table = document.getElementById('myTable');
+        const newRow = table.insertRow(table.rows.length);
+
+        for (let i = 1; i < table.rows.length; i++) {
+            var a = "pax_person" + i;
+            var b = "harga_pax" + i;
+            if($('#'+a).val() != null)
+            {
+                pax_person.push($('#'+a).val());
+            }
+            if($('#'+b).val() != null)
+            {
+                var harga = $('#'+b).val();
+                var rp = harga.substr(3);
+                harga_pax.push(rp);
+            }
+
+        }   
+
         if(nama && lama_hari && gambar)
         {
             formData.append('_token', '<?php echo csrf_token() ?>');
@@ -213,6 +244,8 @@ $(document).ready(function() {
             formData.append('tipe_harga', tipe_harga);
             formData.append('min_pax', min_pax);
             formData.append('harga_min_pax', harga_min_pax);
+            formData.append('pax_person', pax_person);
+            formData.append('harga_pax', harga_pax);
             formData.append('whats_bring', whats_bring);
             
             $.ajax({
@@ -260,21 +293,21 @@ $(document).ready(function() {
 
 });
 
+let i = 1;
+
 function addRow() {
     const table = document.getElementById('myTable');
     const newRow = table.insertRow(table.rows.length);
     const cell1 = newRow.insertCell(0);
     const cell2 = newRow.insertCell(1);
     const cell3 = newRow.insertCell(2);
+
     
-    cell1.innerHTML = '<input type="number" class="form-control" id="pax_person" name="pax_person" placeholder="0" min="1" required>';
-    cell2.innerHTML = '<input type="text" class="form-control" id="harga_pax" name="harga_pax" onkeyup="formatDenganRupiah(this)">';
+    cell1.innerHTML = '<input type="number" class="form-control pax_person" id="pax_person'+i+'" name="pax_person" placeholder="0" min="1" required>';
+    cell2.innerHTML = '<input type="text" class="form-control harga_pax" id="harga_pax'+i+'" name="harga_pax" onkeyup="formatDenganRupiah(this)" required>';
     cell3.innerHTML = '<button style="margin-top:8%; margin-left:43%" class="btn btn-secondary mb-4" id="delete_button" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button>';
 
-}
-
-function getDataTipe2() {
-    
+    i = i+1;
 }
 
 function formatRupiah(angka, prefix) {
@@ -312,7 +345,8 @@ function checkTipeHarga(tipe) {
         $('#label_tipe1').show()
         
         $('#label_tipe2').hide()
-
+        $('.pax_person').prop('required',false)
+        $('.harga_pax').prop('required',false)
     }
     else
     {

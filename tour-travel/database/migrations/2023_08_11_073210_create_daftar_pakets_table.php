@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('daftar_pakets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('destinasi_id')->nullable();
+            $table->unsignedBigInteger('objekwisata_id')->nullable();
             $table->string("destinasi_data");
             $table->string("nama");
             $table->string("lama_hari");
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string("gambar4")->nullable();
             $table->string("gambar5")->nullable();
             $table->foreign('destinasi_id')->references('id')->on('destinasis');
+            $table->foreign('objekwisata_id')->references('id')->on('objek_wisatas');
             $table->timestamps();
         });
     }
