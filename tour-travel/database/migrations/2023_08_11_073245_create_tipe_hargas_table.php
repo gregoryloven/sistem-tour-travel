@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer("tipe");
             $table->integer("min_pax")->nullable();
             $table->integer("pax_person")->nullable();
-            $table->integer("harga");
+            $table->bigInteger("harga");
             $table->timestamps();
         });
     }

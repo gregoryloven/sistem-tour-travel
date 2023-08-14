@@ -137,9 +137,8 @@ $(document).on('click', '.btn-danger', function(e) {
         text: "Data akan dihapus!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Delete!'
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Hapus!'
     }).then((result) => {
         if (result.isConfirmed) {
             $('#delete-form-' + id).submit();

@@ -12,7 +12,7 @@
         <div class="card">
             <div class="card-header">
                 @foreach ($data as $d)
-                <h4>{{ $d->nama }} - {{$d->lama_hari}}</h4>
+                <h4>{{ $d->nama }} - {{$d->lama_hari}}, {{ $d->destinasi->nama }}</h4>
             </div>
             <div class="card-body">
             <div id="carouselExampleIndicators3" class="carousel slide" data-ride="carousel">
@@ -43,7 +43,7 @@
             </div>
             <br>
                 @endforeach
-            <strong>Destinasi yang akan dikunjungi:</strong>
+            <strong>Objek Wisata yang akan dikunjungi:</strong>
             <ul>
                 @foreach ($arrayhasil as $item)
                 <li>{{ $item }}</li>
@@ -65,7 +65,11 @@
             <strong>Harga sudah termasuk (included):</strong>
             <ul>
                 @foreach ($dataArray2 as $data)
+                    @if($data)
                     <li>{{ $data }}</li>
+                    @else
+                    <p>-</p>
+                    @endif
                 @endforeach
             </ul> 
         </div> 

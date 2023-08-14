@@ -30,13 +30,17 @@ class DestinasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Destinasi();
+        $data->nama = $request->get('nama');
+        $data->save();
+
+        return redirect()->route('destinasi.index')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Destinasi $objekWisata)
+    public function show(Destinasi $destinasi)
     {
         //
     }
@@ -44,7 +48,7 @@ class DestinasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Destinasi $objekWisata)
+    public function edit(Destinasi $destinasi)
     {
         //
     }
@@ -52,16 +56,41 @@ class DestinasiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Destinasi $destinasi)
+    public function update(Request $request)
     {
-        //
+        $data = Destinasi::find($request->id);
+        $data->nama = $request->get('nama');
+        $data->save();
+
+        return redirect()->route('destinasi.index')->with('success', 'Data Berhasil Diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Destinasi $destinasi)
+    public function destroy(Request $request)
     {
-        //
+        $data = Destinasi::find($request->id);
+    
+        try
+        {  
+            $data->delete();
+            return redirect()->route('destinasi.index')->with('success', 'Data Berhasil Dihapus');
+            
+        }
+        catch(\Exception $e)
+        {
+            return redirect()->route('destinasi.index')->with('error', 'Gagal Menghapus Data Destinasi');    
+        }
+    }
+
+    public function EditForm(Request $request)
+    {
+        $id = $request->get("id");
+        $data = Destinasi::find($id);
+
+        return response()->json(array(
+            'status'=>'oke',
+            'msg'=>view('destinasi.EditForm',compact('data'))->render()),200);
     }
 }

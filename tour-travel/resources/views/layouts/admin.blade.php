@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="../../admin/node_modules/select2/dist/css/select2.min.css">
   <link rel="stylesheet" href="../../admin/node_modules/dropzone/dist/min/dropzone.min.css">
 
+  <link rel="stylesheet" href="{{ asset('/admin/assets/datatables/dataTables.bootstrap4.min.css')}}">
+
 
   <!-- CSS Libraries -->
 
@@ -58,7 +60,8 @@
   <script src="../../admin/node_modules/dropzone/dist/min/dropzone.min.js"></script>
 
   <script type="text/javascript" src="/admin/assets/datatables/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/admin/assets/datatables/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" src="/admin/assets/datatables/dataTables.bootstrap4.min.js"></script>
+
 
   <!-- JS Libraies -->
 
@@ -71,7 +74,11 @@
             $('#myTable').DataTable();
         });
     </script>
-
+<!-- <script>
+  $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+  </script> -->
   <!-- Page Specific JS File -->
   <!-- <script src="../../admin/assets/js/page/forms-advanced-forms.js"></script> -->
   <!-- <script src="../../admin/assets/js/page/components-multiple-upload.js"></script> -->

@@ -21,7 +21,7 @@
                 @csrf
                 <div class="form-group">
                     <label>Destinasi</label>
-                    <select class="form-control" id='destinasi' name='destinasi' placeholder="Destinasi">
+                    <select class="form-control" id='destinasi_id' name='destinasi_id' placeholder="Destinasi">
                         <option disabled selected>Pilih Destinasi</option>
                         @foreach($data as $d)
                             <option value="{{ $d->id }}">{{ $d->nama }}</option>
@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label>Objek yang dikunjungi</label>
                       <select class="form-control select2" id="multiple-select-field" multiple="" required>
-                        @foreach($data as $d)
+                        @foreach($data2 as $d)
                         <option value="{{ $d->id }}">{{ $d->nama }}</option>
                         @endforeach
                       </select>
@@ -128,8 +128,77 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label >Whats Bring</label>
-                    <textarea class="form-control" id='whats_bring' name='whats_bring' style="height:250px;" placeholder="Gunakan tanda ',' sebagai pemisah" required></textarea>
+                    <label class="d-block">What's Bring</label>
+                    <div class="row">
+                    <div class="col-12 col-md-6 col-lg-6">
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Casual Shirt">
+                    <label class="form-check-label" for="casual_shirt">
+                        Casual Shirt
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Long Sleeved Shirt">
+                    <label class="form-check-label" for="long_sleeved_shirt">
+                        Long Sleeved Shirt
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Camera">
+                    <label class="form-check-label" for="camera">
+                        Camera
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Sun Hat">
+                    <label class="form-check-label" for="sun_hat">
+                        Sun Hat
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Hat or sun visor">
+                    <label class="form-check-label" for="hat_sunvisor">
+                        Hat or sun visor
+                    </label>
+                    </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-6">
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Sunglasses">
+                    <label class="form-check-label" for="sunglasses">
+                        Sunglasses
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Sunscreen">
+                    <label class="form-check-label" for="sunscreen">
+                        Sunscreen
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Walking Shoes">
+                    <label class="form-check-label" for="walking_shoes">
+                        Walking Shoes
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Trekking Shoes">
+                    <label class="form-check-label" for="walking_shoes">
+                        Trekking Shoes
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-bring" type="checkbox" id="Money for Optional activities and souvenir">
+                    <label class="form-check-label" for="money">
+                        Money for Optional activities and souvenir
+                    </label>
+                    </div>
+
+                    </div>
+                    </div>
+                    <!-- <label >Whats Bring</label>
+                    <textarea class="form-control" id='whats_bring' name='whats_bring' style="height:250px;" placeholder="Gunakan tanda ',' sebagai pemisah" required></textarea> -->
                 </div>
                 <div class="form-group">
                     <label>Gambar</label>
@@ -182,6 +251,7 @@ $(document).ready(function() {
     });
     $("#submit").click(function(event) {
         event.preventDefault();
+        var destinasi_id = $("#destinasi_id").val()
         var nama = $("#nama").val()
         var lama_hari = $("#lama_hari").val()
         var tipe_harga = $("#tipe_harga").val()
@@ -203,12 +273,23 @@ $(document).ready(function() {
         formData.append('gambar4', gambar4);
         formData.append('gambar5', gambar5);
 
+        //included
         const checkboxes = document.querySelectorAll('.form-check-input');
         const checkedValues = [];
 
         checkboxes.forEach(checkbox => {
             if (checkbox.checked) {
                 checkedValues.push(checkbox.id);
+            }
+        });
+
+        //whats bring
+        const checkboxes2 = document.querySelectorAll('.form-check-bring');
+        const checkedValues2 = [];
+
+        checkboxes2.forEach(checkbox => {
+            if (checkbox.checked) {
+                checkedValues2.push(checkbox.id);
             }
         });
 
@@ -228,8 +309,13 @@ $(document).ready(function() {
             if($('#'+b).val() != null)
             {
                 var harga = $('#'+b).val();
+                // var rp = harga.substr(3);
+                // harga_pax.push(rp);
+                // var rp = harga.replace(/\./g, '').substr(3);
+
                 var rp = harga.substr(3);
-                harga_pax.push(rp);
+                var titik = rp.replace(/\./g, '');
+                harga_pax.push(parseInt(titik));   
             }
 
         }   
@@ -239,6 +325,8 @@ $(document).ready(function() {
             formData.append('_token', '<?php echo csrf_token() ?>');
             formData.append('data', idgabung);
             formData.append('check', checkedValues);
+            formData.append('whats_bring', checkedValues2);
+            formData.append('destinasi_id', destinasi_id);
             formData.append('nama', nama);
             formData.append('lama_hari', lama_hari);
             formData.append('tipe_harga', tipe_harga);
@@ -246,7 +334,6 @@ $(document).ready(function() {
             formData.append('harga_min_pax', harga_min_pax);
             formData.append('pax_person', pax_person);
             formData.append('harga_pax', harga_pax);
-            formData.append('whats_bring', whats_bring);
             
             $.ajax({
             type:'POST',
