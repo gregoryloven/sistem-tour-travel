@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DaftarPaket;
 use App\Models\Destinasi;
+use App\Models\ObjekWisata;
 use App\Models\TipeHarga;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,6 @@ class DaftarPaketController extends Controller
      */
     public function index()
     {
-        //$data = DaftarPaket::join('destinasis', 'daftar_pakets.destinasi_id_salah', '=','destinasis.id')->get(['daftar_pakets.*', 'destinasis.*']);
         $data = DaftarPaket::all();
         return view('daftar_paket.index',compact('data'));
     }
@@ -25,7 +25,8 @@ class DaftarPaketController extends Controller
     public function create()
     {
         $data = Destinasi::all();
-        return view('daftar_paket.create',compact('data'));
+        $data2 = ObjekWisata::all();
+        return view('daftar_paket.create',compact('data','data2'));
     }
 
     /**
@@ -39,7 +40,8 @@ class DaftarPaketController extends Controller
         // $jsonCheck = json_encode($request->get('check'));
 
         $data = new DaftarPaket();
-        $data->destinasi_data = $request->get('data');
+        $data->destinasi_id = $request->get('destinasi_id');
+        $data->objekwisata_data = $request->get('data');
         $data->nama = $request->get("nama");
         $data->lama_hari = $request->get("lama_hari");
         $data->included = $request->get('check');
@@ -107,7 +109,7 @@ class DaftarPaketController extends Controller
         else
         {
             $array = explode("," , $request->get("pax_person"));
-            $array2 = explode(", " , $request->get("harga_pax"));
+            $array2 = explode("," , $request->get("harga_pax"));
 
             foreach($array as $i => $key)
             {
@@ -136,18 +138,18 @@ class DaftarPaketController extends Controller
         $data2 = TipeHarga::where('daftarpaket_id', $request->id)->get();
 
         $id = DaftarPaket::where('id', $request->id)->first();
-        $a = explode("," , $id->destinasi_data);
+        $a = explode("," , $id->objekwisata_data);
         $arrayhasil = array();
 
         //untuk whatsbring
-        $dataArray = explode(", " , $id->whats_bring);
+        $dataArray = explode("," , $id->whats_bring);
 
         //untuk included
         $dataArray2 = explode("," , $id->included);
 
         foreach($a as $t)
         {
-            $hasil = Destinasi::where('id', $t)->first();
+            $hasil = ObjekWisata::where('id', $t)->first();
             $arrayhasil[] = $hasil->nama;
 
         }
