@@ -21,6 +21,26 @@ class DaftarPaket extends Model
     	return $this->belongsTo(Destinasi::class, 'destinasi_id');
     }
 
+    public function lama_hari()
+    {
+    	return $this->belongsTo(LamaHari::class, 'lamahari_id');
+    }
+
+    public function include_item()
+    {
+    	return $this->belongsTo(IncludeItem::class, 'include_id');
+    }
+
+    public function what_bring()
+    {
+    	return $this->belongsTo(WhatBring::class, 'whatbring_id');
+    }
+
+    public function general_term()
+    {
+    	return $this->belongsTo(GeneralTerm::class, 'generalterm_id');
+    }
+
     public function tipe_harga()
     {
     	return $this->hasMany(TipeHarga::class, 'daftarpaket_id', 'id');
