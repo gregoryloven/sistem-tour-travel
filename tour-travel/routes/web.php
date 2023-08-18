@@ -7,6 +7,8 @@ use App\Http\Controllers\DestinasiController;
 use App\Http\Controllers\ObjekWisataController;
 use App\Http\Controllers\DaftarPaketController;
 
+use App\Http\Controllers\DestinationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,7 +21,7 @@ use App\Http\Controllers\DaftarPaketController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('enduser.home');
 });
 
 route::middleware(['auth'])->group(function(){
@@ -36,8 +38,13 @@ route::middleware(['auth'])->group(function(){
     
 });
 
+// Route::resource('dashboard-user', DashboardUserController::class);
 
-// route::get('/dashboard-admin', [DashboardAdminController::class, 'index']);
+Route::resource('destination', DestinationController::class);
+Route::get('/tour/{destinasi_id}', [DestinationController::class, 'getTour'])->name('destination.tour');
+Route::get('/selectTour', [DestinationController::class, 'selectTour'])->name('destination.selectTour');
+Route::get('/tour/detail/{id}', [DestinationController::class, 'show'])->name('destination.detail');
+
 
 Auth::routes();
 
