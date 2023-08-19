@@ -12,7 +12,8 @@ class LamaHariController extends Controller
      */
     public function index()
     {
-        //
+        $data = LamaHari::all();
+        return view('lama_hari.index', compact('data'));
     }
 
     /**
@@ -28,7 +29,12 @@ class LamaHariController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new LamaHari();
+        $data->day = $request->get('day');
+        $data->night = $request->get('night');
+        $data->save();
+
+        return redirect()->route('lama-hari.index')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
@@ -50,16 +56,42 @@ class LamaHariController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LamaHari $lamaHari)
+    public function update(Request $request)
     {
-        //
+        $data = LamaHari::find($request->id);
+        $data->day = $request->get('day');
+        $data->night = $request->get('night');
+        $data->save();
+
+        return redirect()->route('lama-hari.index')->with('success', 'Data Berhasil Diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LamaHari $lamaHari)
+    public function destroy(Request $request)
     {
-        //
+        $data = LamaHari::find($request->id);
+    
+        try
+        {  
+            $data->delete();
+            return redirect()->route('lama-hari.index')->with('success', 'Data Berhasil Dihapus');
+            
+        }
+        catch(\Exception $e)
+        {
+            return redirect()->route('lama-hari.index')->with('error', 'Gagal Menghapus Data Lama Hari');    
+        }
+    }
+
+    public function EditForm(Request $request)
+    {
+        $id = $request->get("id");
+        $data = LamaHari::find($id);
+
+        return response()->json(array(
+            'status'=>'oke',
+            'msg'=>view('lama_hari.EditForm',compact('data'))->render()),200);
     }
 }

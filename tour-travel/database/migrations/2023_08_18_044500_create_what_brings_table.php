@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('what_brings', function (Blueprint $table) {
             $table->id();
+            $table->string("what_bring");
             $table->timestamps();
         });
     }

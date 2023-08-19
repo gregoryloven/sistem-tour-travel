@@ -16,17 +16,20 @@ class DestinasiSeeder extends Seeder
     {
         DB::table('destinasis')->insert([
         	'nama' => 'Bali',
+            'gambar' => 'bali.jpg',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
 
         DB::table('destinasis')->insert([
         	'nama' => 'Lombok',
+            'gambar' => 'lombok.jpg',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         DB::table('destinasis')->insert([
         	'nama' => 'Labuan Bajo',
+            'gambar' => 'labuanbajo.jpg',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);

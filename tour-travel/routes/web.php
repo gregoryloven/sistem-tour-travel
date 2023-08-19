@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DestinasiController;
+use App\Http\Controllers\LamaHariController;
 use App\Http\Controllers\ObjekWisataController;
 use App\Http\Controllers\DaftarPaketController;
 
@@ -31,6 +32,9 @@ route::middleware(['auth'])->group(function(){
     
     Route::resource('destinasi', DestinasiController::class);
     Route::post('/destinasi/EditForm', [DestinasiController::class, 'EditForm'])->name('destinasi.EditForm');
+
+    Route::resource('lama-hari', LamaHariController::class);
+    Route::post('/lama-hari/EditForm', [LamaHariController::class, 'EditForm'])->name('lama-hari.EditForm');
     
     Route::resource('daftar-paket', DaftarPaketController::class);
     Route::post('/daftar-paket/store', [DaftarPaketController::class, 'store'])->name('daftar-paket.store');

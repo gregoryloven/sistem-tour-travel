@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="d-block">Included</label>
+                    <label class="d-block">Include</label>
                     <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
                     <div class="form-check">
@@ -257,7 +257,7 @@ $(document).ready(function() {
         var tipe_harga = $("#tipe_harga").val()
         var min_pax = $("#min_pax").val()
         var harga_min_pax = $("#harga_min_pax").val().substr(3)
-        var whats_bring = $("#whats_bring").val()
+        var what_bring = $("#what_bring").val()
 
         var formData = new FormData();
 
@@ -273,7 +273,7 @@ $(document).ready(function() {
         formData.append('gambar4', gambar4);
         formData.append('gambar5', gambar5);
 
-        //included
+        //include
         const checkboxes = document.querySelectorAll('.form-check-input');
         const checkedValues = [];
 
@@ -283,7 +283,7 @@ $(document).ready(function() {
             }
         });
 
-        //whats bring
+        //what bring
         const checkboxes2 = document.querySelectorAll('.form-check-bring');
         const checkedValues2 = [];
 
@@ -325,7 +325,7 @@ $(document).ready(function() {
             formData.append('_token', '<?php echo csrf_token() ?>');
             formData.append('data', idgabung);
             formData.append('check', checkedValues);
-            formData.append('whats_bring', checkedValues2);
+            formData.append('what_bring', checkedValues2);
             formData.append('destinasi_id', destinasi_id);
             formData.append('nama', nama);
             formData.append('lama_hari', lama_hari);

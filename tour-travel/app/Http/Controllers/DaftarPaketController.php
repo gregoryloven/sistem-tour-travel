@@ -44,8 +44,8 @@ class DaftarPaketController extends Controller
         $data->objekwisata_data = $request->get('data');
         $data->nama = $request->get("nama");
         $data->lama_hari = $request->get("lama_hari");
-        $data->included = $request->get('check');
-        $data->whats_bring = $request->get("whats_bring");
+        $data->include = $request->get('check');
+        $data->what_bring = $request->get("what_bring");
 
         $file=$request->file('gambar');
         $imgFolder = 'gambar/';
@@ -141,11 +141,11 @@ class DaftarPaketController extends Controller
         $a = explode("," , $id->objekwisata_data);
         $arrayhasil = array();
 
-        //untuk whatsbring
-        $dataArray = explode("," , $id->whats_bring);
+        //untuk what bring
+        $dataArray = explode("," , $id->what_bring);
 
-        //untuk included
-        $dataArray2 = explode("," , $id->included);
+        //untuk include
+        $dataArray2 = explode("," , $id->include);
 
         foreach($a as $t)
         {

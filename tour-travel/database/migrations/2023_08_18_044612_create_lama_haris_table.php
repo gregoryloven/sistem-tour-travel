@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('lama_haris', function (Blueprint $table) {
             $table->id();
+            $table->integer("day");
+            $table->integer("night")->nullable();
             $table->timestamps();
         });
     }
