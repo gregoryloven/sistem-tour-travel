@@ -7,6 +7,7 @@ use App\Http\Controllers\DestinasiController;
 use App\Http\Controllers\LamaHariController;
 use App\Http\Controllers\IncludeItemController;
 use App\Http\Controllers\WhatBringController;
+use App\Http\Controllers\GeneralTermController;
 use App\Http\Controllers\ObjekWisataController;
 use App\Http\Controllers\DaftarPaketController;
 
@@ -43,6 +44,9 @@ route::middleware(['auth'])->group(function(){
     
     Route::resource('what-bring', WhatBringController::class);
     Route::post('/what-bring/EditForm', [WhatBringController::class, 'EditForm'])->name('what-bring.EditForm');
+
+    Route::resource('general-term', GeneralTermController::class);
+    Route::post('/general-term/EditForm', [GeneralTermController::class, 'EditForm'])->name('general-term.EditForm');
     
 
     Route::resource('daftar-paket', DaftarPaketController::class);
