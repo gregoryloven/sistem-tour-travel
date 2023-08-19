@@ -30,11 +30,21 @@ class LamaHariController extends Controller
     public function store(Request $request)
     {
         $data = new LamaHari();
-        $data->day = $request->get('day');
-        $data->night = $request->get('night');
-        $data->save();
+        if ($request->has('radioHalfDay')) 
+        {
+            $data->day = 0;
+            $data->save();
 
-        return redirect()->route('lama-hari.index')->with('success', 'Data Berhasil Ditambahkan');
+            return redirect()->route('lama-hari.index')->with('success', 'Data Berhasil Ditambahkan');
+        } 
+        else 
+        {
+            $data->day = $request->get('day');
+            $data->night = $request->get('night');
+            $data->save();
+    
+            return redirect()->route('lama-hari.index')->with('success', 'Data Berhasil Ditambahkan');
+        }
     }
 
     /**

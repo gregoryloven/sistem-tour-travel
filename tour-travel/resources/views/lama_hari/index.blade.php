@@ -10,7 +10,7 @@
         <div class="section-body">
         
 
-        <a href="#modalCreate" data-toggle='modal' class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah Destinasi</a><br><br>
+        <a href="#modalCreate" data-toggle='modal' class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah Lama Hari</a><br><br>
         
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
@@ -33,9 +33,16 @@
                             @php $i += 1; @endphp
                             <tr>
                                 <td>@php echo $i; @endphp</td>
-                                <td><b>{{$d->day}}</b> Day 
-                                    @if($d->night !== null)
-                                        <b>{{$d->night}}</b> Night
+                                <td>
+                                    @if($d->day === 0)
+                                        Half Day
+                                    @elseif($d->day === 1)
+                                        Full Day
+                                    @else
+                                        <b>{{$d->day}}</b> Day 
+                                        @if($d->night !== null)
+                                            <b>{{$d->night}}</b> Night
+                                        @endif
                                     @endif
                                 </td>
                                 <td>
@@ -78,14 +85,34 @@
                     <div class="row">
                         <div class="col-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label>Day</label>
-                                <input type="number" class="form-control" id='day' name='day' required>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radioHalfDay" id="radioHalfDay" value="radioHalfDay" onclick="checkRadio(this.value)" checked>
+                                    <label class="form-check-label" for="radioHalfDay">
+                                    Half Day
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-6">
                             <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radioCustomDay" id="radioCustomDay" value="radioCustomDay" onclick="checkRadio(this.value)">
+                                    <label class="form-check-label" for="radioCustomDay">
+                                    Custom Day
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6" id="customDay" style='display:none'>
+                            <div class="form-group">
+                                <label>Day</label>
+                                <input type="number" class="form-control" id='day' name='day' required>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6" id="customNight" style='display:none'>
+                            <div class="form-group">
                                 <label>Night</label>
-                                <input type="number" class="form-control" id='night' name='night' required readonly>
+                                <input type="number" class="form-control" id='night' name='night' readonly>
                             </div>
                         </div>
                     </div>
@@ -145,6 +172,37 @@ dayInput.addEventListener('input', function () {
         nightInput.setAttribute('required', 'required');
     }
 });
+
+//Pengecekan Load Halaman Awal
+document.addEventListener('DOMContentLoaded', function () {
+    const radioHalfDay = document.getElementById('radioHalfDay');
+    const customDay = document.getElementById('customDay');
+    const customNight = document.getElementById('customNight');
+    const dayInput = document.getElementById('day');
+
+    // Periksa apakah radio "Half Day" terpilih secara default
+    if (radioHalfDay.checked) {
+        customDay.style.display = 'none';
+        customNight.style.display = 'none';
+        dayInput.value = null;
+        dayInput.removeAttribute('required');
+    }
+});
+
+function checkRadio(value) {
+    if(value == "radioHalfDay"){
+        document.getElementById("customDay").style.display = "none";
+        document.getElementById("customNight").style.display = "none";
+        document.getElementById("radioCustomDay").checked = false; // Tidak dicek
+        $('#day').prop('required',false)
+    }
+    else {
+        document.getElementById("customDay").style.display = "block";
+        document.getElementById("customNight").style.display = "block";
+        document.getElementById("radioHalfDay").checked = false; // Tidak dicek
+    }
+}
+
 
 // function EditForm(id)
 // {
