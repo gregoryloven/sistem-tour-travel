@@ -12,7 +12,8 @@ class IncludeItemController extends Controller
      */
     public function index()
     {
-        //
+        $data = IncludeItem::all();
+        return view('include_item.index', compact('data'));
     }
 
     /**
@@ -28,7 +29,11 @@ class IncludeItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new IncludeItem();
+        $data->include = $request->get('include');
+        $data->save();
+
+        return redirect()->route('include-item.index')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
@@ -50,16 +55,41 @@ class IncludeItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, IncludeItem $includeItem)
+    public function update(Request $request)
     {
-        //
+        $data = IncludeItem::find($request->id);
+        $data->include = $request->get('include');
+        $data->save();
+
+        return redirect()->route('include-item.index')->with('success', 'Data Berhasil Diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(IncludeItem $includeItem)
+    public function destroy(Request $request)
     {
-        //
+        $data = IncludeItem::find($request->id);
+    
+        try
+        {  
+            $data->delete();
+            return redirect()->route('include-item.index')->with('success', 'Data Berhasil Dihapus');
+            
+        }
+        catch(\Exception $e)
+        {
+            return redirect()->route('include-item.index')->with('error', 'Gagal Menghapus Include Item');    
+        }
+    }
+
+    public function EditForm(Request $request)
+    {
+        $id = $request->get("id");
+        $data = IncludeItem::find($id);
+
+        return response()->json(array(
+            'status'=>'oke',
+            'msg'=>view('include_item.EditForm',compact('data'))->render()),200);
     }
 }
