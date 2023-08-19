@@ -79,7 +79,7 @@ class IncludeItemController extends Controller
         }
         catch(\Exception $e)
         {
-            return redirect()->route('include-item.index')->with('error', 'Gagal Menghapus Include Item');    
+            return redirect()->route('include-item.index')->with('error', 'Gagal Menghapus Data');    
         }
     }
 

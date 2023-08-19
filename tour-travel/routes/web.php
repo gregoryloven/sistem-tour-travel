@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DestinasiController;
 use App\Http\Controllers\LamaHariController;
 use App\Http\Controllers\IncludeItemController;
+use App\Http\Controllers\WhatBringController;
 use App\Http\Controllers\ObjekWisataController;
 use App\Http\Controllers\DaftarPaketController;
 
@@ -40,6 +41,10 @@ route::middleware(['auth'])->group(function(){
     Route::resource('include-item', IncludeItemController::class);
     Route::post('/include-item/EditForm', [IncludeItemController::class, 'EditForm'])->name('include-item.EditForm');
     
+    Route::resource('what-bring', WhatBringController::class);
+    Route::post('/what-bring/EditForm', [WhatBringController::class, 'EditForm'])->name('what-bring.EditForm');
+    
+
     Route::resource('daftar-paket', DaftarPaketController::class);
     Route::post('/daftar-paket/store', [DaftarPaketController::class, 'store'])->name('daftar-paket.store');
     Route::get('/daftar-paket/detail/{id}', [DaftarPaketController::class, 'show'])->name('daftar-paket.detail');

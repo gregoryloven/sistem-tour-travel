@@ -12,7 +12,8 @@ class WhatBringController extends Controller
      */
     public function index()
     {
-        //
+        $data = WhatBring::all();
+        return view('what_bring.index', compact('data'));
     }
 
     /**
@@ -28,7 +29,11 @@ class WhatBringController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new WhatBring();
+        $data->what_bring = $request->get('what_bring');
+        $data->save();
+
+        return redirect()->route('what-bring.index')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
@@ -50,16 +55,41 @@ class WhatBringController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WhatBring $whatBring)
+    public function update(Request $request)
     {
-        //
+        $data = WhatBring::find($request->id);
+        $data->what_bring = $request->get('what_bring');
+        $data->save();
+
+        return redirect()->route('what-bring.index')->with('success', 'Data Berhasil Diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WhatBring $whatBring)
+    public function destroy(Request $request)
     {
-        //
+        $data = WhatBring::find($request->id);
+    
+        try
+        {  
+            $data->delete();
+            return redirect()->route('what-bring.index')->with('success', 'Data Berhasil Dihapus');
+            
+        }
+        catch(\Exception $e)
+        {
+            return redirect()->route('what-bring.index')->with('error', 'Gagal Menghapus Data');    
+        }
+    }
+
+    public function EditForm(Request $request)
+    {
+        $id = $request->get("id");
+        $data = WhatBring::find($id);
+
+        return response()->json(array(
+            'status'=>'oke',
+            'msg'=>view('what_bring.EditForm',compact('data'))->render()),200);
     }
 }
