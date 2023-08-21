@@ -41,6 +41,10 @@
                     <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Paket" required>
                 </div>
                 <div class="form-group">
+                    <label >Overview</label>
+                    <textarea class="form-control" id='overview' name='overview' style="height:250px;" required></textarea>
+                </div>
+                <div class="form-group">
                     <label>Lama Hari</label>
                     <select class="form-control" id='lama_hari' name='lama_hari' placeholder="Lama Hari">
                         <option disabled selected>Pilih lama hari</option>
@@ -137,11 +141,11 @@
 
                 <div class="form-group">
                     <label class="d-block">General Term</label>
-                    @foreach($generalterm as $t)
+                    @foreach($generalterm as $g)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="generalterm[]" value="{{$w->general_term}}">
+                            <input class="form-check-input" type="checkbox" name="generalterm[]" value="{{$g->general_term}}">
                             <label class="form-check-label">
-                                {{$t->general_term}}
+                                {{$g->general_term}}
                             </label>
                         </div>
                     @endforeach
@@ -306,14 +310,14 @@ $(document).ready(function() {
         event.preventDefault();
         var destinasi_id = $("#destinasi_id").val()
         var nama = $("#nama").val()
+        var overview = $("#overview").val()
         var lama_hari = $("#lama_hari").val()
         var tipe_harga = $("#tipe_harga").val()
         var min_pax = $("#min_pax").val()
         var harga_min_pax = $("#harga_min_pax").val().substr(3)
-        var what_bring = $("#what_bring").val()
+        // var what_bring = $("#what_bring").val()
 
         var formData = new FormData();
-        var form = $('form')[0];
 
         var gambar = $("#gambar")[0].files[0]
         var gambar2 = $("#gambar2")[0].files[0]
@@ -359,6 +363,12 @@ $(document).ready(function() {
             selectedValues2.push($(this).val());
         });
 
+        //General Term YANG BARU (DIPAKAI)
+        var selectedValues3 = [];
+        $("input[name='generalterm[]']:checked").each(function () {
+            selectedValues3.push($(this).val());
+        });
+
         //array tipe 2
         var pax_person = [];
         var harga_pax = [];
@@ -390,12 +400,12 @@ $(document).ready(function() {
         {
             formData.append('_token', '<?php echo csrf_token() ?>');
             formData.append('data', idgabung);
-            // formData.append('check', checkedValues);
-            // formData.append('what_bring', checkedValues2);
-            form.append('include', selectedValues);
-            form.append('what_bring', selectedValues2);
+            formData.append('include', selectedValues);
+            formData.append('what_bring', selectedValues2);
+            formData.append('general_term', selectedValues3);
             formData.append('destinasi_id', destinasi_id);
             formData.append('nama', nama);
+            formData.append('overview', overview);
             formData.append('lama_hari', lama_hari);
             formData.append('tipe_harga', tipe_harga);
             formData.append('min_pax', min_pax);

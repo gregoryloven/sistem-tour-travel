@@ -47,14 +47,16 @@ class DaftarPaketController extends Controller
         // $jsonData = json_encode($request->get('data'));
         // return $request->get('data');
         // $jsonCheck = json_encode($request->get('check'));
-        return $request->input('include');
 
         $data = new DaftarPaket();
         $data->destinasi_id = $request->get('destinasi_id');
         $data->objekwisata_data = $request->get('data');
         $data->nama = $request->get("nama");
+        $data->overview = $request->get("overview");
         $data->lama_hari = $request->get("lama_hari");
-        $data->include= $request->get('selectedValues');
+        $data->include = $request->get('include');
+        $data->what_bring = $request->get('what_bring');
+        $data->general_term = $request->get('general_term');
         // $data->include = $request->get('check');
         // $data->what_bring = $request->get("what_bring");
 
