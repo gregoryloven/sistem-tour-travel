@@ -6,6 +6,10 @@ use App\Models\DaftarPaket;
 use App\Models\Destinasi;
 use App\Models\ObjekWisata;
 use App\Models\TipeHarga;
+use App\Models\LamaHari;
+use App\Models\IncludeItem;
+use App\Models\WhatBring;
+use App\Models\GeneralTerm;
 use Illuminate\Http\Request;
 
 class DaftarPaketController extends Controller
@@ -26,7 +30,12 @@ class DaftarPaketController extends Controller
     {
         $data = Destinasi::all();
         $data2 = ObjekWisata::all();
-        return view('daftar_paket.create',compact('data','data2'));
+        $lamahari = LamaHari::all();
+        $includeitem = IncludeItem::all();
+        $whatbring = WhatBring::all();
+        $generalterm = GeneralTerm::all();
+
+        return view('daftar_paket.create',compact('data','data2','lamahari','includeitem','whatbring','generalterm'));
     }
 
     /**
@@ -38,14 +47,16 @@ class DaftarPaketController extends Controller
         // $jsonData = json_encode($request->get('data'));
         // return $request->get('data');
         // $jsonCheck = json_encode($request->get('check'));
+        return $request->input('include');
 
         $data = new DaftarPaket();
         $data->destinasi_id = $request->get('destinasi_id');
         $data->objekwisata_data = $request->get('data');
         $data->nama = $request->get("nama");
         $data->lama_hari = $request->get("lama_hari");
-        $data->include = $request->get('check');
-        $data->what_bring = $request->get("what_bring");
+        $data->include= $request->get('selectedValues');
+        // $data->include = $request->get('check');
+        // $data->what_bring = $request->get("what_bring");
 
         $file=$request->file('gambar');
         $imgFolder = 'gambar/';

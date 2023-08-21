@@ -43,12 +43,21 @@
                 <div class="form-group">
                     <label>Lama Hari</label>
                     <select class="form-control" id='lama_hari' name='lama_hari' placeholder="Lama Hari">
-                    <option disabled selected>Pilih lama hari</option>
-                    <option>Half Day</option>
-                    <option>One Day</option>
-                    <option>2D 1N</option>
-                    <option>3D 2N</option>
-                    <option>4D 3N</option>
+                        <option disabled selected>Pilih lama hari</option>
+                        @foreach($lamahari as $l)
+                        <option value="{{$l->id}}">
+                            @if($l->day === 0)
+                                Half Day
+                            @elseif($l->day === 1)
+                                Full Day
+                            @else
+                                <b>{{$l->day}}</b> Day 
+                                @if($l->night !== null)
+                                    <b>{{$l->night}}</b> Night
+                                @endif
+                            @endif
+                        </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group">
@@ -97,6 +106,50 @@
                 <div class="form-group">
                     <label class="d-block">Include</label>
                     <div class="row">
+                        @foreach($includeitem as $i)
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="include[]" value="{{$i->include}}">
+                                <label class="form-check-label">
+                                    {{$i->include}}
+                                </label>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="d-block">What Bring</label>
+                    <div class="row">
+                        @foreach($whatbring as $w)
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="whatbring[]" value="{{$w->what_bring}}">
+                                <label class="form-check-label">
+                                    {{$w->what_bring}}
+                                </label>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="d-block">General Term</label>
+                    @foreach($generalterm as $t)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="generalterm[]" value="{{$w->general_term}}">
+                            <label class="form-check-label">
+                                {{$t->general_term}}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- <div class="form-group">
+                    <label class="d-block">Include</label>
+                    <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
                     <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="Kendaraan">
@@ -126,8 +179,8 @@
                     </div>
                     </div>
                     </div>
-                </div>
-                <div class="form-group">
+                </div> -->
+                <!-- <div class="form-group">
                     <label class="d-block">What's Bring</label>
                     <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
@@ -197,9 +250,9 @@
 
                     </div>
                     </div>
-                    <!-- <label >Whats Bring</label>
-                    <textarea class="form-control" id='whats_bring' name='whats_bring' style="height:250px;" placeholder="Gunakan tanda ',' sebagai pemisah" required></textarea> -->
-                </div>
+                    <label >Whats Bring</label>
+                    <textarea class="form-control" id='whats_bring' name='whats_bring' style="height:250px;" placeholder="Gunakan tanda ',' sebagai pemisah" required></textarea>
+                </div> -->
                 <div class="form-group">
                     <label>Gambar</label>
                     <input type="file" value="" class="form-control" id="gambar" name="gambar" onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])" required>
@@ -260,6 +313,7 @@ $(document).ready(function() {
         var what_bring = $("#what_bring").val()
 
         var formData = new FormData();
+        var form = $('form')[0];
 
         var gambar = $("#gambar")[0].files[0]
         var gambar2 = $("#gambar2")[0].files[0]
@@ -273,24 +327,36 @@ $(document).ready(function() {
         formData.append('gambar4', gambar4);
         formData.append('gambar5', gambar5);
 
-        //include
-        const checkboxes = document.querySelectorAll('.form-check-input');
-        const checkedValues = [];
+        //include YANG LAMA
+        // const checkboxes = document.querySelectorAll('.form-check-input');
+        // const checkedValues = [];
 
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                checkedValues.push(checkbox.id);
-            }
+        // checkboxes.forEach(checkbox => {
+        //     if (checkbox.checked) {
+        //         checkedValues.push(checkbox.id);
+        //     }
+        // });
+
+        //what bring YANG LAMA
+        // const checkboxes2 = document.querySelectorAll('.form-check-bring');
+        // const checkedValues2 = [];
+
+        // checkboxes2.forEach(checkbox => {
+        //     if (checkbox.checked) {
+        //         checkedValues2.push(checkbox.id);
+        //     }
+        // });
+
+        //Inlude YANG BARU (DIPAKAI)
+        var selectedValues = [];
+        $("input[name='include[]']:checked").each(function () {
+            selectedValues.push($(this).val());
         });
 
-        //what bring
-        const checkboxes2 = document.querySelectorAll('.form-check-bring');
-        const checkedValues2 = [];
-
-        checkboxes2.forEach(checkbox => {
-            if (checkbox.checked) {
-                checkedValues2.push(checkbox.id);
-            }
+        //What Bring YANG BARU (DIPAKAI)
+        var selectedValues2 = [];
+        $("input[name='whatbring[]']:checked").each(function () {
+            selectedValues2.push($(this).val());
         });
 
         //array tipe 2
@@ -324,8 +390,10 @@ $(document).ready(function() {
         {
             formData.append('_token', '<?php echo csrf_token() ?>');
             formData.append('data', idgabung);
-            formData.append('check', checkedValues);
-            formData.append('what_bring', checkedValues2);
+            // formData.append('check', checkedValues);
+            // formData.append('what_bring', checkedValues2);
+            form.append('include', selectedValues);
+            form.append('what_bring', selectedValues2);
             formData.append('destinasi_id', destinasi_id);
             formData.append('nama', nama);
             formData.append('lama_hari', lama_hari);
