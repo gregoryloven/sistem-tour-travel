@@ -21,5 +21,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(DestinasiSeeder::class);
         $this->call(ObjekWisataSeeder::class);
+        $this->call(LamaHariSeeder::class);
+        $this->call(IncludeItemSeeder::class);
+        $this->call(WhatBringSeeder::class);
+        $this->call(GeneralTermSeeder::class);
     }
 }

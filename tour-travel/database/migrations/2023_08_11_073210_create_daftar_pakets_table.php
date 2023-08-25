@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('daftar_pakets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('destinasi_id')->nullable();
+            $table->unsignedBigInteger('destinasi_id');
             $table->unsignedBigInteger('objekwisata_id')->nullable();
-            $table->string("destinasi_data");
+            $table->string("objekwisata_data");
             $table->string("nama");
+            $table->longText("overview");
             $table->string("lama_hari");
-            $table->string("included")->nullable();
-            $table->longText("whats_bring");
+            $table->string("include")->nullable();
+            $table->longText("what_bring");
+            $table->longText("general_term");
             $table->string("gambar");
             $table->string("gambar2")->nullable();
             $table->string("gambar3")->nullable();
