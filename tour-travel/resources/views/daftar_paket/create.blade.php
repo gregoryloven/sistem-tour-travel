@@ -181,15 +181,19 @@ $(document).ready(function() {
 		});
     });
     $("#submit").click(function(event) {
+        
         event.preventDefault();
         var nama = $("#nama").val()
         var lama_hari = $("#lama_hari").val()
         var tipe_harga = $("#tipe_harga").val()
         var min_pax = $("#min_pax").val()
         var harga_min_pax = $("#harga_min_pax").val().substr(3)
+        var harga = harga_min_pax.replace(/\./g, '');
         var whats_bring = $("#whats_bring").val()
 
         var formData = new FormData();
+
+        console.log(harga_min_pax);
 
         var gambar = $("#gambar")[0].files[0]
         var gambar2 = $("#gambar2")[0].files[0]
@@ -243,7 +247,7 @@ $(document).ready(function() {
             formData.append('lama_hari', lama_hari);
             formData.append('tipe_harga', tipe_harga);
             formData.append('min_pax', min_pax);
-            formData.append('harga_min_pax', harga_min_pax);
+            formData.append('harga_min_pax', harga);
             formData.append('pax_person', pax_person);
             formData.append('harga_pax', harga_pax);
             formData.append('whats_bring', whats_bring);
