@@ -13,10 +13,6 @@ class DestinasiController extends Controller
     public function index()
     {
         $data = Destinasi::all();
-
-        $title = 'Hapus Destinasi!';
-        $text = "Apakah anda yakin menghapus data ini?";
-        confirmDelete($title, $text);
         
         return view('destinasi.index',compact('data'));
     }
@@ -36,18 +32,6 @@ class DestinasiController extends Controller
     {
         $data = new Destinasi();
         $data->nama = $request->get('nama');
-        $data->deskripsi = $request->get('deskripsi');
-        $data->meta_title = $request->get('meta_title');
-        $data->meta_description = $request->get('meta_description');
-        $data->meta_keywords = $request->get('meta_keywords');
-
-        $file=$request->file('gambar');
-        $imgFolder = 'gambar/';
-        $extension = $request->file('gambar')->extension();
-        $imgFile=time()."_".$request->get('nama').".".$extension;
-        $file->move($imgFolder,$imgFile);
-        $data->gambar=$imgFile;
-        
         $data->save();
 
         return redirect()->route('destinasi.index')->with('success', 'Data Berhasil Ditambahkan');
@@ -76,21 +60,6 @@ class DestinasiController extends Controller
     {
         $data = Destinasi::find($request->id);
         $data->nama = $request->get('nama');
-        $data->deskripsi = $request->get('deskripsi');
-        $data->meta_title = $request->get('meta_title');
-        $data->meta_description = $request->get('meta_description');
-        $data->meta_keywords = $request->get('meta_keywords');
-
-        $file=$request->file('gambar');
-        if(isset($file))
-        {
-            $imgFolder = 'gambar/';
-            $extension = $request->file('gambar')->extension();
-            $imgFile=time()."_".$request->get('nama').".".$extension;
-            $file->move($imgFolder,$imgFile);
-            $data->gambar=$imgFile;
-        }
-
         $data->save();
 
         return redirect()->route('destinasi.index')->with('success', 'Data Berhasil Diubah');
@@ -102,12 +71,12 @@ class DestinasiController extends Controller
     public function destroy(Request $request)
     {
         $data = Destinasi::find($request->id);
-        
+    
         try
-        {
+        {  
             $data->delete();
             return redirect()->route('destinasi.index')->with('success', 'Data Berhasil Dihapus');
-        
+            
         }
         catch(\Exception $e)
         {

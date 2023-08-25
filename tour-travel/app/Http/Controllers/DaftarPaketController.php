@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\DaftarPaket;
 use App\Models\Destinasi;
+use App\Models\ObjekWisata;
 use App\Models\TipeHarga;
+use App\Models\LamaHari;
+use App\Models\IncludeItem;
+use App\Models\WhatBring;
+use App\Models\GeneralTerm;
 use Illuminate\Http\Request;
 
 class DaftarPaketController extends Controller
@@ -14,7 +19,6 @@ class DaftarPaketController extends Controller
      */
     public function index()
     {
-        //$data = DaftarPaket::join('destinasis', 'daftar_pakets.destinasi_id_salah', '=','destinasis.id')->get(['daftar_pakets.*', 'destinasis.*']);
         $data = DaftarPaket::all();
         return view('daftar_paket.index',compact('data'));
     }
@@ -25,7 +29,13 @@ class DaftarPaketController extends Controller
     public function create()
     {
         $data = Destinasi::all();
-        return view('daftar_paket.create',compact('data'));
+        $data2 = ObjekWisata::all();
+        $lamahari = LamaHari::all();
+        $includeitem = IncludeItem::all();
+        $whatbring = WhatBring::all();
+        $generalterm = GeneralTerm::all();
+
+        return view('daftar_paket.create',compact('data','data2','lamahari','includeitem','whatbring','generalterm'));
     }
 
     /**
@@ -39,17 +49,16 @@ class DaftarPaketController extends Controller
         // $jsonCheck = json_encode($request->get('check'));
 
         $data = new DaftarPaket();
-        $data->destinasi_data = $request->get('data');
+        $data->destinasi_id = $request->get('destinasi_id');
+        $data->objekwisata_data = $request->get('data');
         $data->nama = $request->get("nama");
+        $data->overview = $request->get("overview");
         $data->lama_hari = $request->get("lama_hari");
-        $data->included = $request->get('check');
-        $data->whats_bring = $request->get("whats_bring");
-
-        $data2 = new TipeHarga();
-        $data2->tipe = $request->get("tipe_harga");
-        $data2->min_pax = $request->get("min_pax");
-        $data2->harga_min_pax = $request->get("harga_min_pax");
-
+        $data->include = $request->get('include');
+        $data->what_bring = $request->get('what_bring');
+        $data->general_term = $request->get('general_term');
+        // $data->include = $request->get('check');
+        // $data->what_bring = $request->get("what_bring");
 
         $file=$request->file('gambar');
         $imgFolder = 'gambar/';
@@ -99,7 +108,34 @@ class DaftarPaketController extends Controller
         }
 
         $data->save();
-        $data2->save();
+
+        if($request->get("tipe_harga") == 1)
+        {
+            $data2 = new TipeHarga();
+            $data2->daftarpaket_id = $data->id;
+            $data2->tipe = $request->get("tipe_harga");
+            $data2->min_pax = $request->get("min_pax");
+            $data2->harga = $request->get("harga_min_pax");
+
+            $data2->save();
+        }
+        else
+        {
+            $array = explode("," , $request->get("pax_person"));
+            $array2 = explode("," , $request->get("harga_pax"));
+
+            foreach($array as $i => $key)
+            {
+                $data2 = new TipeHarga();
+                $data2->daftarpaket_id = $data->id;
+                $data2->tipe = $request->get("tipe_harga");
+
+                $data2->pax_person = $array[$i];
+                $data2->harga = $array2[$i];
+
+                $data2->save();
+            }           
+        }
 
         return response()->json(array(
             'status'=>'success'
@@ -112,48 +148,76 @@ class DaftarPaketController extends Controller
     public function show(Request $request)
     {
         $data = DaftarPaket::where('id', $request->id)->get();
+        $data2 = TipeHarga::where('daftarpaket_id', $request->id)->get(); 
 
         $id = DaftarPaket::where('id', $request->id)->first();
-        $a = explode("," , $tes->destinasi_data);
+        $a = explode("," , $id->objekwisata_data);
         $arrayhasil = array();
 
-        //untuk whatsbring
-        $dataArray = explode(", " , $id->whats_bring);
+        //untuk what bring
+        $dataArray = explode("," , $id->what_bring);
 
-        //untuk included
-        $dataArray2 = explode("," , $id->included);
+        //untuk include
+        $dataArray2 = explode("," , $id->include);
+
+        //untuk general term
+        $dataArray3 = explode("," , $id->general_term);
 
         foreach($a as $t)
         {
-            $hasil = Destinasi::where('id', $t)->first();
+            $hasil = ObjekWisata::where('id', $t)->first();
             $arrayhasil[] = $hasil->nama;
 
         }
 
-        return view('daftar_paket.detail',compact('data','dataArray','arrayhasil', 'dataArray2'));
+        return view('daftar_paket.detail',compact('data','data2','dataArray','arrayhasil', 'dataArray2', 'dataArray3'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DaftarPaket $daftarPaket)
+    public function edit(Request $request)
     {
-        //
+        $data = DaftarPaket::leftjoin('tipe_hargas', 'daftar_pakets.id', '=', 'tipe_hargas.daftarpaket_id')->find($request->id);
+        $destinasi = Destinasi::all();
+        $objekwisata = ObjekWisata::all();
+        $objekwisata_data = explode(',', $data->objekwisata_data);
+        $lamahari = LamaHari::all();
+        $tipeharga = TipeHarga::where('daftarpaket_id', $request->id)->get();
+        $include = IncludeItem::all();
+        $include_data = explode(',', $data->include);
+        $whatbring = WhatBring::all();
+        $whatbring_data = explode(',', $data->what_bring);
+        $generalterm = GeneralTerm::all();
+        $generalterm_data = explode(',', $data->general_term);
+
+        return view('daftar_paket.edit', compact('data','destinasi','objekwisata','objekwisata_data','lamahari','tipeharga','include','include_data','whatbring','whatbring_data','generalterm','generalterm_data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DaftarPaket $daftarPaket)
+    public function update(Request $request)
     {
-        //
+        return $request->all();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DaftarPaket $daftarPaket)
+    public function destroy(Request $request)
     {
-        //
+        $data = DaftarPaket::find($request->id);
+    
+        try
+        {  
+            $data->delete();
+            return redirect()->route('daftar-paket.index')->with('success', 'Data Berhasil Dihapus');
+            
+        }
+        catch(\Exception $e)
+        {
+            return redirect()->route('daftar-paket.index')->with('error', 'Gagal Menghapus Data');    
+        }
     }
 }

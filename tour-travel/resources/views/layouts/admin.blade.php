@@ -12,13 +12,15 @@
   <link rel="stylesheet" href="../../admin/node_modules/select2/dist/css/select2.min.css">
   <link rel="stylesheet" href="../../admin/node_modules/dropzone/dist/min/dropzone.min.css">
 
+  <link rel="stylesheet" href="{{ asset('/admin/assets/datatables/dataTables.bootstrap4.min.css')}}">
+
 
   <!-- CSS Libraries -->
 
   <!-- Template CSS -->
   <link rel="stylesheet" href="../../admin/assets/css/style.css">
   <link rel="stylesheet" href="../../admin/assets/css/components.css">
-  
+
 </head>
 
 <body>
@@ -57,12 +59,26 @@
   <script src="../../admin/node_modules/select2/dist/js/select2.full.min.js"></script>
   <script src="../../admin/node_modules/dropzone/dist/min/dropzone.min.js"></script>
 
+  <script type="text/javascript" src="/admin/assets/datatables/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="/admin/assets/datatables/dataTables.bootstrap4.min.js"></script>
+
+
   <!-- JS Libraies -->
 
   <!-- Template JS File -->
   <script src="../../admin/assets/js/scripts.js"></script>
   <script src="../../admin/assets/js/custom.js"></script>
 
+  <script>
+        jQuery(document).ready(function() {    
+            $('#myTable').DataTable();
+        });
+    </script>
+<!-- <script>
+  $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+  </script> -->
   <!-- Page Specific JS File -->
   <!-- <script src="../../admin/assets/js/page/forms-advanced-forms.js"></script> -->
   <!-- <script src="../../admin/assets/js/page/components-multiple-upload.js"></script> -->
