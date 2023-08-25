@@ -5,7 +5,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-        <h1>Daftar Paket Tour</h1>
+        <h1>Buat Paket Tour</h1>
         </div>
 
         <div class="section-body">
@@ -29,7 +29,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Objek yang dikunjungi</label>
+                    <label>Objek Wisata yang dikunjungi</label>
                       <select class="form-control select2" id="multiple-select-field" multiple="" required>
                         @foreach($data2 as $d)
                         <option value="{{ $d->id }}">{{ $d->nama }}</option>
@@ -41,7 +41,7 @@
                     <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Paket" required>
                 </div>
                 <div class="form-group">
-                    <label >Overview</label>
+                    <label>Overview</label>
                     <textarea class="form-control" id='overview' name='overview' style="height:250px;" required></textarea>
                 </div>
                 <div class="form-group">
@@ -95,7 +95,7 @@
                             <tr style="text-align: center;">
                                 <th style="width: 40%;">Pax</th>
                                 <th style="width: 40%;">Harga</th>
-                                <th style="width: 20%;">Actions <button class="btn btn-secondary ml-3" id='plus_button' onclick="addRow()"><i class="fa fa-plus-circle"></i></button></th>
+                                <th style="width: 20%;">Actions <button class="btn btn-primary ml-3" id='plus_button' onclick="addRow()"><i class="fa fa-plus-circle"></i></button></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -413,7 +413,7 @@ $(document).ready(function() {
             formData.append('pax_person', pax_person);
             formData.append('harga_pax', harga_pax);
             
-            $.ajax({
+        $.ajax({
             type:'POST',
             url:'{{route("daftar-paket.store")}}',
             data: formData,
@@ -470,7 +470,7 @@ function addRow() {
     
     cell1.innerHTML = '<input type="number" class="form-control pax_person" id="pax_person'+i+'" name="pax_person" placeholder="0" min="1" required>';
     cell2.innerHTML = '<input type="text" class="form-control harga_pax" id="harga_pax'+i+'" name="harga_pax" onkeyup="formatDenganRupiah(this)" required>';
-    cell3.innerHTML = '<button style="margin-top:8%; margin-left:43%" class="btn btn-secondary mb-4" id="delete_button" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button>';
+    cell3.innerHTML = '<button style="margin-top:6%; margin-left:43%" class="btn btn-danger mb-4" id="delete_button" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button>';
 
     i = i+1;
 }

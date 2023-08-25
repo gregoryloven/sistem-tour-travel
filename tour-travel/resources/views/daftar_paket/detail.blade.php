@@ -1,5 +1,11 @@
 @extends('layouts.admin')
 
+<style>
+    .indented-paragraph {
+        text-indent: 40px;
+    }
+</style>
+
 @section('content')
 <div class="main-content">
     <section class="section">
@@ -42,7 +48,9 @@
                 </a>
             </div>
             <br>
-                @endforeach
+            <strong>Overview:</strong>
+                <p class="indented-paragraph">{{ $d->overview }}</p>
+                
             <strong>Objek Wisata yang akan dikunjungi:</strong>
             <ul>
                 @foreach ($arrayhasil as $item)
@@ -51,9 +59,9 @@
             </ul>
             <strong>Pax & Harga:</strong>
             <ul>
-                @foreach ($data2 as $d)
-                    @if(isset($d->min_pax)) <li>Min: {{ $d->min_pax }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @currency($d->harga)</li> @endif
-                    @if(isset($d->pax_person)) <li>{{ $d->pax_person }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @currency($d->harga)</li> @endif
+                @foreach ($data2 as $dd)
+                    @if(isset($dd->min_pax)) <li>Min: {{ $dd->min_pax }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @currency($dd->harga)</li> @endif
+                    @if(isset($dd->pax_person)) <li>{{ $dd->pax_person }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @currency($dd->harga)</li> @endif
                 @endforeach
             </ul>
             <strong>Keperluan yang perlu dibawa (what's bring):</strong>
@@ -72,24 +80,58 @@
                     @endif
                 @endforeach
             </ul> 
+            <strong>General Term:</strong>
+            <ul>
+                @foreach ($dataArray3 as $data)
+                    @if($data)
+                    <li>{{ $data }}</li>
+                    @else
+                    <p>-</p>
+                    @endif
+                @endforeach
+            </ul>
+            <div class="col-12 col-md-12 col-lg-12">
+				<div class="d-flex justify-content-end">
+                    <form id="delete-form-{{ $d->id }}" action="{{ route('daftar-paket.destroy', $d->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <a href="{{ url('daftar-paket/edit/'.$d->id) }}" class="btn btn-icon btn-warning"><i class="far fa-edit"></i></a>
+
+                        <input type="hidden" class="form-control" id='id' name='id' placeholder="Type your name" value="{{$d->id}}">
+                        <button type="button" class="btn btn-icon btn-danger" data-id="{{ $d->id }}"><i class="fa fa-trash"></i></button>                                   
+                    </form>
+                </div>
+            </div>
+                @endforeach
         </div> 
         </div>
     </section>
 </div>
 
-<!-- <div class="table-responsive">
-            <table class="table table-bordered" id="myTable">
-                <thead>
-                    <tr style="text-align: center;">
-                        <th width="5%">No</th>
-                        <th>KBG</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
+@endsection
+
+@section('javascript')
+<script>
+
+$(document).on('click', '.btn-danger', function(e) {
+    e.preventDefault();
+    
+    var id = $(this).data('id');
+    
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text: "Data akan dihapus!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Hapus!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#delete-form-' + id).submit();
+        }
+    });
+});
+
+
+</script>
 @endsection
