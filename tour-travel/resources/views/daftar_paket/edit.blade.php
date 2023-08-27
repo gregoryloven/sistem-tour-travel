@@ -104,20 +104,8 @@
                                 <th style="width: 20%;">Action<button class="btn btn-primary ml-3" id='plus_button' onclick="addRow()"><i class="fa fa-plus-circle"></i></button></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach($tipeharga as $d)
-                            <tr>
-                                <td>
-                                    <input type="number" style="text-align: center;" class="form-control pax_person" id="pax_person'+i+'" name="pax_person" value="{{$d->pax_person}}" min="1" required>
-                                </td>
-                                <td>
-                                    <input type="text" style="text-align: center;" class="form-control harga_pax" id="harga_pax'+i+'" name="harga_pax" value="@currency($d->harga)" onkeyup="formatDenganRupiah(this)" required>
-                                </td>
-                                <td>
-                                    <button style="margin-top:10%; margin-left:20%" class="btn btn-danger mb-4" id="delete_button" onclick="deleteRow(this)"><i class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            @endforeach
+                        <tbody id="data-table-body">
+                           
                         </tbody>
                     </table>
                 </div>
@@ -507,6 +495,47 @@ else
     $('#harga_min_pax').prop('required',false)
 }
 }
+
+
+const data_table =@json($tipeharga);
+
+
+    // Fungsi untuk menampilkan data dalam tabel
+            function tampilkanData() {
+                const tbody = document.getElementById("data-table-body");
+                tbody.innerHTML = ""; // Bersihkan isi tbody
+
+                data_table.forEach(item => {
+                    const row = document.createElement("tr");
+
+                    const idCell = document.createElement("td");
+                    const idInput = document.createElement("input");
+                    idInput.type = "number";
+                    idInput.value = item.pax_person;
+
+
+                    idInput.addEventListener("blur", function() {
+                        // Tangkap perubahan dan lakukan sesuatu (misalnya, kirim ke server)
+                        const newValue = this.value;
+                        console.log("Nilai baru: " + newValue);
+                    });
+
+                    const namaCell = document.createElement("td");
+                    namaCell.textContent = item.harga;
+
+
+                    row.appendChild(idCell);
+                    row.appendChild(namaCell);
+
+                    idCell.appendChild(idInput);
+
+                
+
+                    tbody.appendChild(row);
+                });
+            }
+
+        tampilkanData();
 
 </script>
 @endsection
