@@ -301,6 +301,7 @@
 <script>
 $(document).ready(function() {
     var idgabung = [];
+    //checklist untuk destinasi id
     $("#multiple-select-field").change(function() {
         $(this).each(function() {
             idgabung = $(this).val();
