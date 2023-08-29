@@ -51,6 +51,8 @@ route::middleware(['auth'])->group(function(){
 
     Route::resource('daftar-paket', DaftarPaketController::class);
     Route::post('/daftar-paket/store', [DaftarPaketController::class, 'store'])->name('daftar-paket.store');
+    Route::get('/daftar-paket/edit/{id}', [DaftarPaketController::class, 'edit'])->name('daftar-paket.edit');
+    Route::post('/daftar-paket/update', [DaftarPaketController::class, 'update'])->name('daftar-paket.update');
     Route::get('/daftar-paket/detail/{id}', [DaftarPaketController::class, 'show'])->name('daftar-paket.detail');
     
 });

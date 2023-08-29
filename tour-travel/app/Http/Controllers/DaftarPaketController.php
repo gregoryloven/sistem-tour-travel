@@ -148,7 +148,7 @@ class DaftarPaketController extends Controller
     public function show(Request $request)
     {
         $data = DaftarPaket::where('id', $request->id)->get();
-        $data2 = TipeHarga::where('daftarpaket_id', $request->id)->get();
+        $data2 = TipeHarga::where('daftarpaket_id', $request->id)->get(); 
 
         $id = DaftarPaket::where('id', $request->id)->first();
         $a = explode("," , $id->objekwisata_data);
@@ -160,6 +160,9 @@ class DaftarPaketController extends Controller
         //untuk include
         $dataArray2 = explode("," , $id->include);
 
+        //untuk general term
+        $dataArray3 = explode("," , $id->general_term);
+
         foreach($a as $t)
         {
             $hasil = ObjekWisata::where('id', $t)->first();
@@ -167,30 +170,54 @@ class DaftarPaketController extends Controller
 
         }
 
-        return view('daftar_paket.detail',compact('data','data2','dataArray','arrayhasil', 'dataArray2'));
+        return view('daftar_paket.detail',compact('data','data2','dataArray','arrayhasil', 'dataArray2', 'dataArray3'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DaftarPaket $daftarPaket)
+    public function edit(Request $request)
     {
-        //
+        $data = DaftarPaket::leftjoin('tipe_hargas', 'daftar_pakets.id', '=', 'tipe_hargas.daftarpaket_id')->find($request->id);
+        $destinasi = Destinasi::all();
+        $objekwisata = ObjekWisata::all();
+        $objekwisata_data = explode(',', $data->objekwisata_data);
+        $lamahari = LamaHari::all();
+        $tipeharga = TipeHarga::where('daftarpaket_id', $request->id)->get();
+        $include = IncludeItem::all();
+        $include_data = explode(',', $data->include);
+        $whatbring = WhatBring::all();
+        $whatbring_data = explode(',', $data->what_bring);
+        $generalterm = GeneralTerm::all();
+        $generalterm_data = explode(',', $data->general_term);
+
+        return view('daftar_paket.edit', compact('data','destinasi','objekwisata','objekwisata_data','lamahari','tipeharga','include','include_data','whatbring','whatbring_data','generalterm','generalterm_data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DaftarPaket $daftarPaket)
+    public function update(Request $request)
     {
-        //
+        return $request->all();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DaftarPaket $daftarPaket)
+    public function destroy(Request $request)
     {
-        //
+        $data = DaftarPaket::find($request->id);
+    
+        try
+        {  
+            $data->delete();
+            return redirect()->route('daftar-paket.index')->with('success', 'Data Berhasil Dihapus');
+            
+        }
+        catch(\Exception $e)
+        {
+            return redirect()->route('daftar-paket.index')->with('error', 'Gagal Menghapus Data');    
+        }
     }
 }
