@@ -199,7 +199,24 @@ class DaftarPaketController extends Controller
      */
     public function update(Request $request)
     {
-        return $request->all();
+
+        //Mengubah data string dipisahkan oleh koma menjadi array 
+       $array = explode(",", $request->get("pax_person"));
+       $array2 = explode(",", $request->get("data_upd"));
+
+
+        //Mengubah isi array menjadi int
+       $integerArray = array_map('intval', $array);
+       $integerArray2 = array_map('intval', $array2);
+
+        //Menggabungkan kedua array
+       $gabung = array_merge($integerArray2, $integerArray);
+
+       return $gabung;
+  
+
+ 
+
     }
 
     /**

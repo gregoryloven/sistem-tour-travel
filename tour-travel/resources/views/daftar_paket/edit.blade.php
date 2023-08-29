@@ -200,6 +200,147 @@
 <script>
 $(document).ready(function() {
 
+
+    const data_table =@json($tipeharga);
+
+let x = 0; 
+
+let dataUpd = [];
+
+    // Fungsi untuk menampilkan data dalam tabel
+            function tampilkanData() {
+                const tbody = document.getElementById("data-table-body");
+                tbody.innerHTML = ""; // Bersihkan isi tbody
+
+
+                for(let i = 0; i < data_table.length; i++){
+
+
+                    dataUpd.push(data_table[i].pax_person);
+
+                    const row = document.createElement("tr");
+
+                    const idCell = document.createElement("td");
+                    const idInput = document.createElement("input");
+                    idInput.type = "number";
+                    idInput.className = "form-control pax_person"; 
+                    idInput.style = "text-align: center;";
+                    // idInput.id="pax_person"+i+""
+                    idInput.value = data_table[i].pax_person;
+
+
+                    idInput.addEventListener("blur", function() {
+                        // Tangkap perubahan dan lakukan sesuatu (misalnya, kirim ke server)
+
+                        let tmpUpd = [...dataUpd];
+
+                        
+                        if(tmpUpd[i] == dataUpd[i]){
+                            dataUpd[i] = parseInt(this.value);
+                        }
+
+
+                        const newValue = this.value;
+
+
+                        console.log(dataUpd);
+                        console.log("Nilai baru: " + newValue);
+                    });
+
+                    const namaCell = document.createElement("td");
+                    namaCell.textContent = data_table[i].harga;
+
+
+                    const buttonCell = document.createElement('td');
+                    const idButton = document.createElement("button");
+                    idButton.className = "btn  btn-danger mb-4";
+                    idButton.style = "margin-top:10%; margin-left:20%";
+
+
+                    idButton.onclick = function(event) {
+        event.preventDefault();
+
+                        deleteDataUpd(i);
+                    };
+
+
+             
+
+                    const icon = document.createElement('i');
+                    icon.className = "fas fa-trash"; // Menggunakan kelas Font Awesome untuk ikon "trash"
+
+
+                    row.appendChild(idCell);
+                    row.appendChild(namaCell);
+                    row.appendChild(buttonCell);
+
+
+                    idCell.appendChild(idInput);
+                    buttonCell.appendChild(idButton);
+                    idButton.appendChild(icon);
+
+
+
+
+
+
+                    tbody.appendChild(row);
+                }
+
+                // data_table.forEach(item => {
+                //     x = x +1;
+                //     const row = document.createElement("tr");
+
+                //     const idCell = document.createElement("td");
+                //     const idInput = document.createElement("input");
+                //     idInput.type = "number";
+                //     idInput.className = "form-control pax_person"; 
+                //     idInput.style = "text-align: center;";
+                //     input.id="pax_person"+x+""
+                //     idInput.value = item.pax_person;
+
+
+                //     idInput.addEventListener("blur", function() {
+                //         // Tangkap perubahan dan lakukan sesuatu (misalnya, kirim ke server)
+                //         const newValue = this.value;
+                //         console.log("Nilai baru: " + newValue);
+                //     });
+
+                //     const namaCell = document.createElement("td");
+                //     namaCell.textContent = item.harga;
+
+
+                //     row.appendChild(idCell);
+                //     row.appendChild(namaCell);
+
+                //     idCell.appendChild(idInput);
+
+                
+
+                //     tbody.appendChild(row);
+                // });
+            }
+
+        tampilkanData();
+
+
+        function deleteDataUpd (index){
+            for(let i = 0; i < data_table.length; i++){
+                if(i == index){
+                            dataUpd.splice(i,1);
+                            const table = document.getElementById('myTablee');
+                            table.deleteRow(index + 1);
+
+                        }
+                    }
+
+                    console.log(dataUpd)
+                }
+            
+
+        
+
+
     $("#submit").click(function(event) {
         event.preventDefault();
         var destinasi_id = $("#destinasi_id").val()
@@ -277,6 +418,8 @@ $(document).ready(function() {
                 }
 
             }   
+
+
         }
         if({{ $data->tipe }} == 1)
         {
@@ -310,11 +453,13 @@ $(document).ready(function() {
                 // formData.append('tipe_harga', tipe_harga);
                 formData.append('min_pax', min_pax);
                 formData.append('harga_min_pax', harga_min_pax);
-                formData.append('pax_person', pax_person);
+                formData.append('pax_person', pax_person );
+                formData.append('data_upd', dataUpd );
+                
                 formData.append('harga_pax', harga_pax);
 
                 $.ajax({
-                    type:'POST',
+                    type:'PUT',
                     url:'{{route("daftar-paket.update")}}',
                     data: formData,
                         processData: false, 
@@ -377,10 +522,11 @@ $(document).ready(function() {
                 formData.append('min_pax', min_pax);
                 formData.append('harga_min_pax', harga_min_pax);
                 formData.append('pax_person', pax_person);
+                formData.append('data_upd', dataUpd );
                 formData.append('harga_pax', harga_pax);
 
                 $.ajax({
-                    type:'POST',
+                    type:'PUT',
                     url:'{{route("daftar-paket.update")}}',
                     data: formData,
                         processData: false, 
@@ -497,45 +643,7 @@ else
 }
 
 
-const data_table =@json($tipeharga);
 
-
-    // Fungsi untuk menampilkan data dalam tabel
-            function tampilkanData() {
-                const tbody = document.getElementById("data-table-body");
-                tbody.innerHTML = ""; // Bersihkan isi tbody
-
-                data_table.forEach(item => {
-                    const row = document.createElement("tr");
-
-                    const idCell = document.createElement("td");
-                    const idInput = document.createElement("input");
-                    idInput.type = "number";
-                    idInput.value = item.pax_person;
-
-
-                    idInput.addEventListener("blur", function() {
-                        // Tangkap perubahan dan lakukan sesuatu (misalnya, kirim ke server)
-                        const newValue = this.value;
-                        console.log("Nilai baru: " + newValue);
-                    });
-
-                    const namaCell = document.createElement("td");
-                    namaCell.textContent = item.harga;
-
-
-                    row.appendChild(idCell);
-                    row.appendChild(namaCell);
-
-                    idCell.appendChild(idInput);
-
-                
-
-                    tbody.appendChild(row);
-                });
-            }
-
-        tampilkanData();
 
 </script>
 @endsection
