@@ -258,7 +258,7 @@ let dataUpd = [];
 
 
                     idButton.onclick = function(event) {
-        event.preventDefault();
+                    event.preventDefault();
 
                         deleteDataUpd(i);
                     };

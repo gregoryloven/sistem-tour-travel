@@ -1,6 +1,48 @@
 @extends('layouts2.enduser')
 
 @section('content')
+<style>
+    .accordion {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    }
+    .accordion .accordion-header, .accordion .accordion-body {
+    padding: 10px 15px;
+    }
+    .accordion .accordion-header {
+    background-color: #e5e5e5;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.5s;
+    }
+    .accordion .accordion-header h4 {
+    line-height: 1;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    }
+    .accordion .accordion-header:hover {
+    background-color: #f2f2f2;
+    }
+    .accordion .accordion-header[aria-expanded=true] {
+    box-shadow: 0 2px 6px #acb5f6;
+    background-color: #F15D30;
+    color: #fff;
+    }
+    .accordion .accordion-body {
+    line-height: 24px;
+    }
+
+    p {
+    color: #6C757D; /* Warna font hitam (black) */
+    }
+
+    li {
+    color: #6C757D; /* Warna font hitam (black) */
+    }
+
+</style>
 
 <!-- <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/enduser/images/bg_2.jpg');">
     <div class="overlay"></div>
@@ -43,23 +85,108 @@
 
 
 <section class="ftco-section">
-    <div class="container">
-        <div class="row">
+    <div class="row">
 
-   
-        <div class="col-md-4 ftco-animate">
-            <div class="project-wrap">
-                <img class="img" style="background-image" src="{{asset('gambar/'.$detail->gambar)}}">
+        <div class="col-12 col-md-12 col-lg-12"> 
             <div class="text p-4">
-                <span class="days">{{$detail->lama_hari}}</span>
-                <h3><a href="#">{{$detail->nama}}</a></h3>
-                <span class="days">{{$detail->included}}</span>
+                <h4>{{$detail->nama}}</h4>
+                @foreach($lamahari as $l)
+                
+                    @if($l->day === 0)
+                        Half Day
+                    @elseif($l->day === 1)
+                        Full Day
+                    @else
+                        <span class="days">{{$l->day}}</span> Day 
+                        @if($l->night !== null)
+                        <span class="days">{{$l->night}}</span> Night
+                        @endif
+                    @endif
+                
+                @endforeach
             </div>
+            <div class="card-body">
+                <div id="accordion">
+                    <div class="accordion">
+                        <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-1" aria-expanded="true">
+                            <h4>Overview</h4>
+                        </div>
+                        <div class="accordion-body collapse show" id="panel-body-1" data-parent="#accordion">
+                            <p>{{$detail->overview}}</p>
+                        </div>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-2">
+                            <h4>Places to Visit</h4>
+                        </div>
+                        <div class="accordion-body collapse" id="panel-body-2" data-parent="#accordion">
+                            <ul>
+                                @foreach ($arrayhasil as $item)
+                                <li>{{ $item }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-6">
+                            <h4>Pax & Price</h4>
+                        </div>
+                        <div class="accordion-body collapse" id="panel-body-6" data-parent="#accordion">
+                            <ul>
+                                @foreach ($data2 as $dd)
+                                    @if(isset($dd->min_pax)) <li>Min: {{ $dd->min_pax }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @currency($dd->harga)</li> @endif
+                                    @if(isset($dd->pax_person)) <li>{{ $dd->pax_person }} Pax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @currency($dd->harga)</li> @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-3">
+                            <h4>What's Bring</h4>
+                        </div>
+                        <div class="accordion-body collapse" id="panel-body-3" data-parent="#accordion">
+                            <ul style="list-style: none; padding-left: 0;">
+                                @foreach ($dataArray as $data)
+                                    <li>
+                                        <input type="checkbox" checked style="margin-left: 10px;" onclick="return false;"> {{ $data }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-4">
+                            <h4>Included</h4>
+                        </div>
+                        <div class="accordion-body collapse" id="panel-body-4" data-parent="#accordion">
+                            <ul style="list-style: none; padding-left: 0;">
+                                @foreach ($dataArray2 as $data)
+                                    <li>
+                                        <input type="checkbox" checked style="margin-left: 10px;" onclick="return false;"> {{ $data }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-5">
+                            <h4>General Term</h4>
+                        </div>
+                        <div class="accordion-body collapse" id="panel-body-5" data-parent="#accordion">
+                            <ul style="list-style: none; padding-left: 0;">
+                                @foreach ($dataArray3 as $data)
+                                    <li>
+                                        <input type="checkbox" checked style="margin-left: 10px;" onclick="return false;"> {{ $data }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        
         </div>
+        
     </div>
 </section>
 

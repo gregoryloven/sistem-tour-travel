@@ -24,6 +24,7 @@
 	
 	<link rel="stylesheet" href="../../enduser/css/flaticon.css">
 	<link rel="stylesheet" href="../../enduser/css/style.css">
+
 </head>
 <body>
 	@include('layouts2.navbar')

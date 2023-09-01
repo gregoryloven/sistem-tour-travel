@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Destinasi;
 use App\Models\DaftarPaket;
+use App\Models\ObjekWisata;
+use App\Models\TipeHarga;
+use App\Models\LamaHari;
 use Illuminate\Http\Request;
 use DB;
 
@@ -46,7 +49,30 @@ class DestinationController extends Controller
     public function show($id)
     {
         $detail = DaftarPaket::findOrFail($id);
-        return view('enduser.destination.detail', compact('detail'));
+        $data2 = TipeHarga::where('daftarpaket_id', $id)->get();
+        $lamahari = LamaHari::where('id', $detail->lama_hari)->with('daftar_paket')->get();
+
+        $a = explode("," , $detail->objekwisata_data);
+        $arrayhasil = array();
+
+        //untuk what bring
+        $dataArray = explode("," , $detail->what_bring);
+
+        //untuk include
+        $dataArray2 = explode("," , $detail->include);
+
+        //untuk general term
+        $dataArray3 = explode("," , $detail->general_term);
+
+        foreach($a as $t)
+        {
+            $hasil = ObjekWisata::where('id', $t)->first();
+            $arrayhasil[] = $hasil->nama;
+
+        }
+
+
+        return view('enduser.destination.detail', compact('detail','data2','lamahari','arrayhasil','dataArray','dataArray2','dataArray3'));
     }
 
     /**
