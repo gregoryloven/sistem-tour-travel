@@ -413,7 +413,7 @@ $(document).ready(function() {
             formData.append('lama_hari', lama_hari);
             formData.append('tipe_harga', tipe_harga);
             formData.append('min_pax', min_pax);
-            formData.append('harga_min_pax', harga);
+            formData.append('harga_min_pax', harga_min_pax);
             formData.append('pax_person', pax_person);
             formData.append('harga_pax', harga_pax);
             

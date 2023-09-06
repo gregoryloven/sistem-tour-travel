@@ -101,9 +101,20 @@ class DestinationController extends Controller
 
     public function getTour($destinasi_id)
     {
+        $judulTour = DaftarPaket::where('destinasi_id', $destinasi_id)->first();
         $tour = DaftarPaket::where('destinasi_id', $destinasi_id)->get();
+        // $lamahari = [];
 
-        return view('enduser.destination.tour', compact('tour'));
+        foreach ($tour as $t) {
+            $lama_hari_id = $t->lama_hari;
+            $lama_hari = LamaHari::where('id', $lama_hari_id)->get();
+            $lamahari = $lama_hari;
+        }
+
+        // $lamahari = collect($lamahari)->flatten();
+// return $lamahari;
+
+        return view('enduser.destination.tour', compact('judulTour','tour','lamahari'));
     }
 
     public function selectTour(Request $request)
