@@ -316,7 +316,8 @@ $(document).ready(function() {
         var lama_hari = $("#lama_hari").val()
         var tipe_harga = $("#tipe_harga").val()
         var min_pax = $("#min_pax").val()
-        var harga_min_pax = $("#harga_min_pax").val().substr(3)
+        var rp_min_pax = $("#harga_min_pax").val().substr(3)
+        var harga_min_pax = rp_min_pax.replace(/\./g, '');
         // var what_bring = $("#what_bring").val()
 
         var formData = new FormData();

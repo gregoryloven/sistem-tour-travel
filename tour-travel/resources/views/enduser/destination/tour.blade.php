@@ -23,7 +23,7 @@
         <a href="{{ route('destination.detail', ['id' => $t->id]) }}">
             <div class="project-wrap">
                 <img class="img" style="background-image" src="{{asset('gambar/'.$t->gambar)}}">
-            <div class="text p-4">
+            <div class="text p-4" style="height: 250px">
             @foreach($lamahari as $l)
                 
                 @if($l->day === 0)
@@ -40,7 +40,7 @@
             @endforeach
                 <h3>{{$t->nama}}</h3>
         </a>
-                <p>
+                <p style="text-align: justify;">
                     @if(strlen($t->overview) > 200)
                         {{ substr($t->overview, 0, 200) }}...
                         <a href="{{ route('destination.detail', ['id' => $t->id]) }}">Read More</a>
