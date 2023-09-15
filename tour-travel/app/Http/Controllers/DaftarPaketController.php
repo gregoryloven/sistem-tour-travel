@@ -212,9 +212,11 @@ class DaftarPaketController extends Controller
         //Menggabungkan kedua array
        $gabung = array_merge($integerArray2, $integerArray);
 
-       return $gabung;
+    //    return $gabung;
   
-
+    return response()->json(array(
+        'status'=>'success'
+    ));
  
 
     }

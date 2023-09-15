@@ -9,6 +9,7 @@ use App\Models\TipeHarga;
 use App\Models\LamaHari;
 use Illuminate\Http\Request;
 use DB;
+use Artesaos\SEOTools\Facades\SEOMeta;
 
 class DestinationController extends Controller
 {
@@ -16,7 +17,7 @@ class DestinationController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    {   
         $data = Destinasi::all();
 
         $countData = DB::table('daftar_pakets')
@@ -71,6 +72,9 @@ class DestinationController extends Controller
 
         }
 
+        SEOMeta::setTitle($detail->nama);
+        SEOMeta::setDescription($detail->overview);
+        SEOMeta::addKeyword($detail->keywords); 
 
         return view('enduser.destination.detail', compact('detail','data2','lamahari','arrayhasil','dataArray','dataArray2','dataArray3'));
     }

@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                 <form method="POST" enctype="multipart/form-data">
-                @csrf
+                
                 @method('PUT')
                 <div class="form-group">
                     <label>Destinasi</label>
@@ -200,7 +200,6 @@
 <script>
 $(document).ready(function() {
 
-
     const data_table =@json($tipeharga);
 
 let x = 0; 
@@ -354,7 +353,6 @@ let dataUpd = [];
         {
             var harga_min_pax = $("#harga_min_pax").val().substr(3)
         }
-
         var formData = new FormData();
 
         var gambar = $("#gambar")[0].files[0]
@@ -368,6 +366,7 @@ let dataUpd = [];
         formData.append('gambar3', gambar3);
         formData.append('gambar4', gambar4);
         formData.append('gambar5', gambar5);
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         //Objek Wisata YANG BARU (DIPAKAI)
         var selectedValues4 = [];
@@ -458,12 +457,13 @@ let dataUpd = [];
                 
                 formData.append('harga_pax', harga_pax);
 
+
                 $.ajax({
                     type:'PUT',
                     url:'{{route("daftar-paket.update")}}',
                     data: formData,
-                        processData: false, 
-                        contentType: false, 
+                    processData: false, 
+                    contentType: false, 
                     success: function(data){
 
                     if(data.status == 'success')
@@ -509,7 +509,7 @@ let dataUpd = [];
             }
             else
             {
-                formData.append('_token', '<?php echo csrf_token() ?>');
+                formData.append('_token', csrfToken);
                 formData.append('objek_wisata', selectedValues4);
                 formData.append('include', selectedValues);
                 formData.append('what_bring', selectedValues2);
@@ -529,8 +529,11 @@ let dataUpd = [];
                     type:'PUT',
                     url:'{{route("daftar-paket.update")}}',
                     data: formData,
-                        processData: false, 
-                        contentType: false, 
+                    processData: false, 
+                    contentType: false, 
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken // Tambahkan token CSRF ke header permintaan
+                    },
                     success: function(data){
 
                     if(data.status == 'success')
@@ -545,7 +548,7 @@ let dataUpd = [];
                             denyButtonText: 'Tambahkan Lagi!'
                         }).then(function(result) {
                         if (result.isConfirmed) {
-                            window.location.href = "/daftar-paket/show";
+                            window.location.href = "/daftar-paket/detail/{{$data->id}}";
                         }
                         else if (result.isDenied){
                             window.location.href = "/daftar-paket/create";
